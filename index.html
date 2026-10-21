@@ -22,6 +22,9 @@
       --warning-bg: #fffbeb;
       --warning-border: #fde68a;
       --warning-text: #92400e;
+      --info-bg: #eff6ff;
+      --info-border: #bfdbfe;
+      --info-text: #1e40af;
       --radius: 14px;
     }
 
@@ -81,13 +84,13 @@
 
     /* Wizytówka koordynatora */
     .contact-card {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
+      background: var(--info-bg);
+      border: 1px solid var(--info-border);
       border-radius: var(--radius);
       padding: 12px 16px;
       margin-bottom: 20px;
       font-size: 13px;
-      color: #1e40af;
+      color: var(--info-text);
       display: flex;
       align-items: center;
       gap: 12px;
@@ -97,7 +100,7 @@
       flex-shrink: 0;
       width: 24px;
       height: 24px;
-      fill: #1e40af;
+      fill: var(--info-text);
     }
 
     /* Karty pytań */
@@ -191,7 +194,7 @@
       margin-left: 8px;
     }
 
-    /* Boksy dynamicznych podpowiedzi */
+    /* Boksy dynamicznych podpowiedzi bezpośrednio pod pytaniem */
     .inline-hint-box {
       margin-top: 10px;
       padding: 11px 13px;
@@ -413,8 +416,8 @@
     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
     <div>
       <strong>Koordynator Wydziałowy ds. Erasmus+ (WCh PG):</strong><br>
-      Adres e-mail: <span id="label-email" style="font-weight: 700;">joanna.grabowska@pg.edu.pl</span><br>
-      <span style="font-size: 11.5px; color: #3b82f6;">Wszelkie zapytania prosimy kierować z uczelnianej domeny @student.pg.edu.pl</span>
+      Adres e-mail: <span id="label-email" style="font-weight: 700;">TWOJ_ADRES_EMAIL@pg.edu.pl</span><br>
+      <span style="font-size: 11.5px; color: #3b82f6;">Obsługa studentów I i II stopnia (domena @student.pg.edu.pl)</span>
     </div>
   </div>
 
@@ -505,6 +508,8 @@
         <div class="tile-content">Szkoła Doktorska</div>
       </label>
     </div>
+    <!-- Bezpośrednia podpowiedź dla Szkoły Doktorskiej -->
+    <div id="info-doktoranci" class="inline-hint-box"></div>
   </div>
 
   <!-- Pytanie 5: Zaległości / Dług ECTS -->
@@ -580,6 +585,7 @@
       <strong>Oficjalne procedury Politechniki Gdańskiej:</strong>
       <ul style="margin-left: 18px; margin-top: 6px;">
         <li><a href="https://pg.edu.pl/inter-hub/erasmus/erasmus-mobilnosc-studentow/erasmus-studia-za-granica/zanim-wyjedziesz-ogolne-zasady" target="_blank" rel="noopener">Zanim wyjedziesz – ogólne zasady</a></li>
+        <li><a href="https://pg.edu.pl/inter-hub/erasmus/erasmus-mobilnosc-studentow/erasmus-studia-za-granica/jak-wyjechac-krok-po-kroku" target="_blank" rel="noopener">Jak wyjechać – krok po kroku</a></li>
       </ul>
     </div>
 
@@ -627,13 +633,50 @@
 
 <script>
   // ================= KONFIGURACJA =================
-  const EMAIL_KOORDYNATORA = "joanna.grabowska@pg.edu.pl"; // <-- TUTAJ WPISZ SWÓJ ADRES E-MAIL
+  const EMAIL_KOORDYNATORA = "TWOJ_ADRES_EMAIL@pg.edu.pl"; // <-- TUTAJ WPISZ SWÓJ ADRES E-MAIL
   // ================================================
 
   let wykorzystaneMiesiace = 0;
 
   // Ustawienie adresu w nagłówku
   document.getElementById('label-email').innerText = EMAIL_KOORDYNATORA;
+
+  // Funkcja sprawdzająca aktualną datę i status naboru na WCh PG
+  function sprawdzTerminRekrutacji() {
+    const dzis = new Date();
+    const rok = dzis.getFullYear();
+
+    // Terminy graniczne: 15 maja (miesiąc 4) i 15 listopada (miesiąc 10)
+    const terminMaj = new Date(rok, 4, 15, 23, 59, 59);
+    const terminListopad = new Date(rok, 10, 15, 23, 59, 59);
+
+    let najblizszyTermin;
+    let semestrDocelowy;
+
+    if (dzis <= terminMaj) {
+      najblizszyTermin = terminMaj;
+      semestrDocelowy = "semestr zimowy nadchodzącego roku akademickiego";
+    } else if (dzis <= terminListopad) {
+      najblizszyTermin = terminListopad;
+      semestrDocelowy = "semestr letni bieżącego roku akademickiego";
+    } else {
+      najblizszyTermin = new Date(rok + 1, 4, 15, 23, 59, 59);
+      semestrDocelowy = "semestr zimowy kolejnego roku akademickiego";
+    }
+
+    const roznicaMs = najblizszyTermin - dzis;
+    const pozostaleDni = Math.max(0, Math.ceil(roznicaMs / (1000 * 60 * 60 * 24)));
+
+    const opcjeFormat = { day: 'numeric', month: 'long', year: 'numeric' };
+    const dataGranicznaTekst = najblizszyTermin.toLocaleDateString('pl-PL', opcjeFormat);
+    const dataDzisTekst = dzis.toLocaleDateString('pl-PL', opcjeFormat);
+
+    let html = `<strong>Status naboru na WCh PG:</strong> Dzisiaj jest <strong>${dataDzisTekst}</strong>. Aktualna tura dotyczy wyjazdów na <strong>${semestrDocelowy}</strong>.<br>`;
+    html += `Termin składania dokumentów upływa <strong>${dataGranicznaTekst}</strong> (pozostało: <strong>${pozostaleDni} dni</strong>).<br>`;
+    html += `<span style="display:inline-block; margin-top:4px; font-size:12.5px; color:#b45309;">⚠️ <strong>Ważne:</strong> Terminy nominacji i naboru na uczelniach zagranicznych mogą upływać wcześniej niż termin wydziałowy! Sprawdź niezwłocznie stronę uczelni partnerskiej.</span>`;
+
+    return html;
+  }
 
   function zmienMiesiace(delta) {
     wykorzystaneMiesiace = Math.max(0, Math.min(12, wykorzystaneMiesiace + delta));
@@ -673,7 +716,19 @@
       infoUmowa.style.display = 'none';
     }
 
-    // 2. Podpowiedź pod pytaniem 7 (Język)
+    // 2. Podpowiedź pod pytaniem 4 (Szkoła Doktorska)
+    const infoDoktoranci = document.getElementById('info-doktoranci');
+    if (etap === 'dokt') {
+      infoDoktoranci.style.display = 'block';
+      infoDoktoranci.style.background = '#fffbeb';
+      infoDoktoranci.style.border = '1px solid #fde68a';
+      infoDoktoranci.style.color = '#92400e';
+      infoDoktoranci.innerHTML = `<strong>Informacja dla doktorantów:</strong> Koordynator wydziałowy obsługuje studentów I oraz II stopnia. W sprawie wyjazdów w ramach Szkoły Doktorskiej skontaktuj się bezpośrednio z <strong>Biurem Szkoły Doktorskiej PG</strong>.`;
+    } else {
+      infoDoktoranci.style.display = 'none';
+    }
+
+    // 3. Podpowiedź pod pytaniem 7 (Język)
     const infoJezyk = document.getElementById('info-jezyk');
     if (jezyk === 'nie_nie_wymaga') {
       infoJezyk.style.display = 'block';
@@ -701,6 +756,11 @@
     let terminyWskazowki = [];
     let formalneWymogi = [];
 
+    // Warunek: Szkoła Doktorska (przekierowanie instytucjonalne)
+    if (etap === 'dokt') {
+      blokady.push("Jesteś doktorantem w Szkole Doktorskiej. Koordynator wydziałowy prowadzi kwalifikację wyłącznie dla studentów I i II stopnia. Skontaktuj się ze Szkołą Doktorską PG w celu realizacji procedury wyjazdowej.");
+    }
+
     // Warunek: Umowa
     if (umowa === 'nie') {
       blokady.push("Brak umowy z wybraną uczelnią. Podpisanie nowej umowy trwa wiele miesięcy i wyklucza wyjazd w najbliższym semestrze.");
@@ -708,7 +768,7 @@
       blokady.push("Brak wybranej uczelni docelowej. Wybór jednostki partnerskiej jest warunkiem koniecznym do oceny możliwości wyjazdu.");
     }
 
-    // Warunek: Semestr
+    // Warunek: Semestr dla I stopnia
     if (etap === 'lic_1') {
       blokady.push("Wyjazd na I stopniu studiów jest możliwy najwcześniej od 2. roku (od 3. semestru).");
     }
@@ -730,10 +790,11 @@
       blokady.push(`Planowany wyjazd (${planowaneMiesiace} mies.) przekracza Twój pozostały kapitał (${pozostalyKapital} mies.). Możesz wyjechać maksymalnie na ${pozostalyKapital} miesięcy.`);
     }
 
-    // Terminy
+    // Terminy - dynamiczne sprawdzanie daty
     if (kiedy === 'najblizszy') {
-      terminyWskazowki.push("<strong>Terminy kwalifikacji na WCh PG:</strong> do <strong>15 listopada</strong> (dla wyjazdów na semestr letni) oraz do <strong>15 maja</strong> (dla wyjazdów na semestr zimowy).");
-      terminyWskazowki.push("<strong>Ważne:</strong> Terminy nominacji na uczelniach zagranicznych mogą być inne i wcześniejsze! Sprawdź natychmiast na stronie uczelni partnerskiej, czy mieścisz się jeszcze w terminie.");
+      terminyWskazowki.push(sprawdzTerminRekrutacji());
+    } else {
+      terminyWskazowki.push("Planujesz wyjazd w dalszej przyszłości. Pamiętaj, że nabory na WCh PG zamykają się <strong>15 listopada</strong> (na semestr letni) oraz <strong>15 maja</strong> (na semestr zimowy).");
     }
 
     // Prezentacja panelu wyników
@@ -746,15 +807,15 @@
 
     if (blokady.length > 0) {
       sekcja.className = 'wynik-negatywny';
-      statusDiv.innerHTML = `<span>✕</span> Wymagane działania naprawcze`;
+      statusDiv.innerHTML = `<span>✕</span> Wymagane działania formalne`;
       emailSekcja.style.display = 'none';
       
       let html = `<p style="margin-bottom:8px; font-weight:700;">Aktualnie nie spełniasz wszystkich warunków kwalifikacji:</p><ul class="wynik-lista">`;
       blokady.forEach(b => html += `<li>${b}</li>`);
       html += `</ul>`;
 
-      if (terminyWskazowki.length > 0) {
-        html += `<div class="info-box"><h4>Ważne terminy:</h4><ul class="wynik-lista" style="margin-bottom:0;">`;
+      if (terminyWskazowki.length > 0 && etap !== 'dokt') {
+        html += `<div class="info-box"><h4>Harmonogram i terminy:</h4><ul class="wynik-lista" style="margin-bottom:0;">`;
         terminyWskazowki.forEach(t => html += `<li>${t}</li>`);
         html += `</ul></div>`;
       }
@@ -766,13 +827,12 @@
       
       let html = `<p style="margin-bottom:10px; font-weight:600;">Spełniasz podstawowe kryteria formalne do ubiegania się o wyjazd na WCh PG.</p>`;
       
-      // 1. Najpierw wytyczne rekrutacyjne
+      // 1. Najpierw wytyczne rekrutacyjne (dynamiczna data naboru)
       if (terminyWskazowki.length > 0) {
         html += `<div class="info-box" style="border-left: 4px solid #0284c7;">
           <h4 style="color: #0369a1;">Ważne wytyczne rekrutacyjne:</h4>
-          <ul class="wynik-lista" style="margin-bottom:0;">`;
-        terminyWskazowki.forEach(t => html += `<li>${t}</li>`);
-        html += `</ul></div>`;
+          <div style="font-size:13.5px; line-height:1.5;">${terminyWskazowki[0]}</div>
+        </div>`;
       }
 
       // 2. Następnie komplet informacji do przekazania koordynatorowi
@@ -845,9 +905,7 @@ ${nazwisko}`;
     const temat = encodeURIComponent(`Erasmus+ WCh PG - Zgłoszenie kandydata: ${dane.nazwisko}`);
     const tresc = encodeURIComponent(dane.plainText);
 
-    // Bezpośredni link w przeglądarce do compose w Outlooku Office 365
     const webOutlookUrl = `https://outlook.office.com/mail/deeplink/compose?to=${encodeURIComponent(EMAIL_KOORDYNATORA)}&subject=${temat}&body=${tresc}`;
-
     const okno = window.open(webOutlookUrl, '_blank');
 
     statusMsg.style.display = 'block';
@@ -856,14 +914,13 @@ ${nazwisko}`;
       statusMsg.style.background = '#def7ec';
       statusMsg.style.color = '#03543f';
       statusMsg.style.border = '1px solid #bcf0da';
-      statusMsg.innerHTML = "✓ Otwarto nową kartę z przygotowaną wiadomością w Twojej poczcie Outlook (M365). Sprawdź treść, dołącz plik/skan zaświadczenia z dziekanatu i kliknij <strong>Wyślij</strong>.";
+      statusMsg.innerHTML = "✓ Otwarto nową kartę w Twojej uczelnianej poczcie Outlook (M365). Sprawdź treść, dołącz plik/skan zaświadczenia z dziekanatu i kliknij <strong>Wyślij</strong>.";
     } else {
-      // Obsługa sytuacji zablokowania wyskakującego okna w przeglądarce
       navigator.clipboard.writeText(dane.plainText);
       statusMsg.style.background = '#fffbeb';
       statusMsg.style.color = '#92400e';
       statusMsg.style.border = '1px solid #fde68a';
-      statusMsg.innerHTML = `Przeglądarka zablokowała wyskakujące okno. <a href="${webOutlookUrl}" target="_blank" style="font-weight:700; color:#92400e; text-decoration:underline;">Kliknij tutaj, aby przejść do Outlooka M365</a> (treść zgłoszenia została też automatycznie skopiowana do schowka).`;
+      statusMsg.innerHTML = `Przeglądarka zablokowała wyskakujące okno. <a href="${webOutlookUrl}" target="_blank" style="font-weight:700; color:#92400e; text-decoration:underline;">Kliknij tutaj, aby przejść do Outlooka M365</a> (treść zgłoszenia została też skopiowana do schowka).`;
     }
   }
 
