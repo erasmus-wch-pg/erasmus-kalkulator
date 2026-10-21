@@ -50,10 +50,43 @@
       max-width: 580px;
     }
 
+    /* Przełącznik języka */
+    .lang-switcher-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 8px;
+    }
+
+    .lang-switcher {
+      display: inline-flex;
+      background: #e2e8f0;
+      border-radius: 20px;
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .lang-btn {
+      border: none;
+      background: transparent;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      padding: 4px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .lang-btn.active {
+      background: #fff;
+      color: var(--primary);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
     header {
       text-align: center;
       margin-bottom: 20px;
-      padding: 10px 4px;
+      padding: 4px;
     }
 
     .badge {
@@ -82,7 +115,6 @@
       color: var(--text-muted);
     }
 
-    /* Wizytówka koordynatora */
     .contact-card {
       background: var(--info-bg);
       border: 1px solid var(--info-border);
@@ -103,7 +135,6 @@
       fill: var(--info-text);
     }
 
-    /* Karty pytań */
     .card {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -194,7 +225,6 @@
       margin-left: 8px;
     }
 
-    /* Boksy dynamicznych podpowiedzi bezpośrednio pod pytaniem */
     .inline-hint-box {
       margin-top: 10px;
       padding: 11px 13px;
@@ -210,7 +240,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Stepper dotykowy (Miesiące) */
     .stepper {
       display: flex;
       align-items: center;
@@ -255,7 +284,6 @@
       color: var(--text-muted);
     }
 
-    /* Wyniki */
     #wynik-sekcja {
       margin-top: 24px;
       border-radius: var(--radius);
@@ -323,7 +351,6 @@
       word-break: break-all;
     }
 
-    /* Sekcja wysyłki zgłoszenia */
     #email-form-sekcja {
       margin-top: 20px;
       padding-top: 16px;
@@ -405,19 +432,26 @@
 <body>
 
 <div class="container">
+  <!-- Przełącznik języka PL / EN -->
+  <div class="lang-switcher-wrapper">
+    <div class="lang-switcher">
+      <button type="button" class="lang-btn active" id="btn-lang-pl" onclick="ustawJezyk('pl')">PL</button>
+      <button type="button" class="lang-btn" id="btn-lang-en" onclick="ustawJezyk('en')">EN</button>
+    </div>
+  </div>
+
   <header>
-    <div class="badge">Politechnika Gdańska</div>
-    <h1>Kwalifikacja Erasmus+</h1>
-    <p class="subtitle">Wydział Chemiczny • Autodiagnoza formalna kandydata</p>
+    <div class="badge" data-i18n="badge">Politechnika Gdańska</div>
+    <h1 data-i18n="title">Kwalifikacja Erasmus+</h1>
+    <p class="subtitle" data-i18n="subtitle">Wydział Chemiczny • Autodiagnoza formalna kandydata</p>
   </header>
 
   <!-- Wizytówka koordynatora -->
   <div class="contact-card">
     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
     <div>
-      <strong>Koordynator Wydziałowy ds. Erasmus+ (WCh PG):</strong><br>
-      Adres e-mail: <span id="label-email" style="font-weight: 700;">joanna.grabowska@pg.edu.pl</span><br>
-      <span style="font-size: 11.5px; color: #3b82f6;">Obsługa studentów I i II stopnia (domena @student.pg.edu.pl)</span>
+      <strong data-i18n="coordTitle">Koordynator Wydziałowy ds. Erasmus+ (WCh PG):</strong><br>
+      <span data-i18n="coordEmailLabel">Adres e-mail:</span> <span id="label-email" style="font-weight: 700;">joanna.grabowska@pg.edu.pl</span><br>
     </div>
   </div>
 
@@ -425,24 +459,24 @@
   <div class="card">
     <div class="card-title">
       <span class="step-num">1</span>
-      <span>Czy uczelnia partnerska ma podpisaną umowę z WCh PG?</span>
+      <span data-i18n="q1">Czy uczelnia partnerska ma podpisaną umowę z WCh PG?</span>
     </div>
     <div class="tiles-grid">
       <label class="tile-label">
         <input type="radio" name="umowa" value="tak" checked onchange="obliczWynik()">
-        <div class="tile-content">Tak, znajduje się na liście umów WCh</div>
+        <div class="tile-content" data-i18n="q1_opt1">Tak, znajduje się na liście umów WCh</div>
       </label>
       <label class="tile-label">
         <input type="radio" name="umowa" value="nie" onchange="obliczWynik()">
-        <div class="tile-content">Nie ma podpisanej umowy z WCh</div>
+        <div class="tile-content" data-i18n="q1_opt2">Nie ma podpisanej umowy z WCh</div>
       </label>
       <label class="tile-label">
         <input type="radio" name="umowa" value="nie_wiem" onchange="obliczWynik()">
-        <div class="tile-content">Nie wiem / chcę sprawdzić listę</div>
+        <div class="tile-content" data-i18n="q1_opt3">Nie wiem / chcę sprawdzić listę</div>
       </label>
       <label class="tile-label">
         <input type="radio" name="umowa" value="nie_wybralem" onchange="obliczWynik()">
-        <div class="tile-content">Jeszcze nie wybrałem/-am uczelni</div>
+        <div class="tile-content" data-i18n="q1_opt4">Jeszcze nie wybrałem/-am uczelni</div>
       </label>
     </div>
     <div id="info-umowa" class="inline-hint-box"></div>
@@ -452,16 +486,16 @@
   <div class="card">
     <div class="card-title">
       <span class="step-num">2</span>
-      <span>Kiedy planujesz rozpocząć wyjazd?</span>
+      <span data-i18n="q2">Kiedy planujesz rozpocząć wyjazd?</span>
     </div>
     <div class="tiles-grid tiles-grid-2">
       <label class="tile-label">
         <input type="radio" name="kiedy" value="najblizszy" checked onchange="obliczWynik()">
-        <div class="tile-content">W nadchodzącym semestrze</div>
+        <div class="tile-content" data-i18n="q2_opt1">W nadchodzącym semestrze</div>
       </label>
       <label class="tile-label">
         <input type="radio" name="kiedy" value="przyszlosc" onchange="obliczWynik()">
-        <div class="tile-content">W dalszej przyszłości</div>
+        <div class="tile-content" data-i18n="q2_opt2">W dalszej przyszłości</div>
       </label>
     </div>
   </div>
@@ -470,16 +504,16 @@
   <div class="card">
     <div class="card-title">
       <span class="step-num">3</span>
-      <span>Na jaki okres planujesz wyjazd?</span>
+      <span data-i18n="q3">Na jaki okres planujesz wyjazd?</span>
     </div>
     <div class="tiles-grid tiles-grid-2">
       <label class="tile-label">
         <input type="radio" name="okres" value="1_semestr" checked onchange="obliczWynik()">
-        <div class="tile-content">1 semestr (ok. 5 mies.)</div>
+        <div class="tile-content" data-i18n="q3_opt1">1 semestr (ok. 5 mies.)</div>
       </label>
       <label class="tile-label">
         <input type="radio" name="okres" value="2_semestry" onchange="obliczWynik()">
-        <div class="tile-content">Cały rok akademicki (2 sem.)</div>
+        <div class="tile-content" data-i18n="q3_opt2">Cały rok akademicki (2 sem.)</div>
       </label>
     </div>
   </div>
@@ -488,27 +522,26 @@
   <div class="card">
     <div class="card-title">
       <span class="step-num">4</span>
-      <span>Aktualny etap i semestr studiów:</span>
+      <span data-i18n="q4">Aktualny etap i semestr studiów:</span>
     </div>
     <div class="tiles-grid">
       <label class="tile-label">
         <input type="radio" name="etap" value="lic_1" onchange="obliczWynik()">
-        <div class="tile-content">I stopień (inż.): 1. lub 2. semestr</div>
+        <div class="tile-content" data-i18n="q4_opt1">I stopień (inż.): 1. lub 2. semestr</div>
       </label>
       <label class="tile-label">
         <input type="radio" name="etap" value="lic_wyzej" checked onchange="obliczWynik()">
-        <div class="tile-content">I stopień (inż.): 3. semestr lub wyższy</div>
+        <div class="tile-content" data-i18n="q4_opt2">I stopień (inż.): 3. semestr lub wyższy</div>
       </label>
       <label class="tile-label">
         <input type="radio" name="etap" value="mgr" onchange="obliczWynik()">
-        <div class="tile-content">II stopień (studia magisterskie)</div>
+        <div class="tile-content" data-i18n="q4_opt3">II stopień (studia magisterskie)</div>
       </label>
       <label class="tile-label">
         <input type="radio" name="etap" value="dokt" onchange="obliczWynik()">
-        <div class="tile-content">Szkoła Doktorska</div>
+        <div class="tile-content" data-i18n="q4_opt4">Szkoła Doktorska</div>
       </label>
     </div>
-    <!-- Bezpośrednia podpowiedź dla Szkoły Doktorskiej -->
     <div id="info-doktoranci" class="inline-hint-box"></div>
   </div>
 
@@ -516,16 +549,16 @@
   <div class="card">
     <div class="card-title">
       <span class="step-num">5</span>
-      <span>Czy masz niezaliczony przedmiot / dług punktowy ECTS?</span>
+      <span data-i18n="q5">Czy masz niezaliczony przedmiot / dług punktowy ECTS?</span>
     </div>
     <div class="tiles-grid tiles-grid-2">
       <label class="tile-label">
         <input type="radio" name="zaleglosci" value="nie" checked onchange="obliczWynik()">
-        <div class="tile-content">Nie (wszystko zaliczone)</div>
+        <div class="tile-content" data-i18n="q5_opt1">Nie (wszystko zaliczone)</div>
       </label>
       <label class="tile-label">
         <input type="radio" name="zaleglosci" value="tak" onchange="obliczWynik()">
-        <div class="tile-content">Tak (posiadam zaległość)</div>
+        <div class="tile-content" data-i18n="q5_opt2">Tak (posiadam zaległość)</div>
       </label>
     </div>
   </div>
@@ -534,14 +567,14 @@
   <div class="card">
     <div class="card-title">
       <span class="step-num">6</span>
-      <span>Wcześniejsze wyjazdy Erasmus+ na OBECNYM stopniu studiów:</span>
+      <span data-i18n="q6">Wcześniejsze wyjazdy Erasmus+ na OBECNYM stopniu studiów:</span>
     </div>
-    <span class="hint-text">Maksymalny łączny kapitał mobilności to 12 miesięcy na danym stopniu studiów.</span>
+    <span class="hint-text" data-i18n="q6_hint">Maksymalny łączny kapitał mobilności to 12 miesięcy na danym stopniu studiów.</span>
     <div class="stepper">
       <button type="button" class="stepper-btn" onclick="zmienMiesiace(-1)">−</button>
       <div class="stepper-value">
         <span id="liczba-miesiecy">0</span>
-        <small>miesięcy wykorzystanych</small>
+        <small id="stepper-label" data-i18n="stepper_unit">miesięcy wykorzystanych</small>
       </div>
       <button type="button" class="stepper-btn" onclick="zmienMiesiace(1)">+</button>
     </div>
@@ -551,27 +584,26 @@
   <div class="card">
     <div class="card-title">
       <span class="step-num">7</span>
-      <span>Certyfikat językowy (język wykładowy uczelni przyjmującej):</span>
+      <span data-i18n="q7">Certyfikat językowy (język wykładowy uczelni przyjmującej):</span>
     </div>
     <div class="tiles-grid">
       <label class="tile-label">
         <input type="radio" name="jezyk" value="posiadam" checked onchange="obliczWynik()">
-        <div class="tile-content">Posiadam wymagany certyfikat językowy</div>
+        <div class="tile-content" data-i18n="q7_opt1">Posiadam wymagany certyfikat językowy</div>
       </label>
       <label class="tile-label">
         <input type="radio" name="jezyk" value="nie_nie_wymaga" onchange="obliczWynik()">
-        <div class="tile-content">Nie posiadam, a uczelnia przyjmująca go NIE wymaga</div>
+        <div class="tile-content" data-i18n="q7_opt2">Nie posiadam, a uczelnia przyjmująca go NIE wymaga</div>
       </label>
       <label class="tile-label">
         <input type="radio" name="jezyk" value="nie_wymaga" onchange="obliczWynik()">
-        <div class="tile-content">Nie posiadam, a uczelnia przyjmująca go WYMAGA</div>
+        <div class="tile-content" data-i18n="q7_opt3">Nie posiadam, a uczelnia przyjmująca go WYMAGA</div>
       </label>
       <label class="tile-label">
         <input type="radio" name="jezyk" value="nie_nie_wiem" onchange="obliczWynik()">
-        <div class="tile-content">Nie posiadam i nie wiem, czy jest wymagany</div>
+        <div class="tile-content" data-i18n="q7_opt4">Nie posiadam i nie wiem, czy jest wymagany</div>
       </label>
     </div>
-    <!-- Bezpośrednia podpowiedź językowa pod pytaniem -->
     <div id="info-jezyk" class="inline-hint-box"></div>
   </div>
 
@@ -582,52 +614,52 @@
 
     <!-- Przydatne linki -->
     <div class="links-box">
-      <strong>Oficjalne procedury Politechniki Gdańskiej:</strong>
+      <strong data-i18n="linksTitle">Oficjalne procedury Politechniki Gdańskiej:</strong>
       <ul style="margin-left: 18px; margin-top: 6px;">
-        <li><a href="https://pg.edu.pl/inter-hub/erasmus/erasmus-mobilnosc-studentow/erasmus-studia-za-granica/zanim-wyjedziesz-ogolne-zasady" target="_blank" rel="noopener">Zanim wyjedziesz – ogólne zasady</a></li>
-        <li><a href="https://pg.edu.pl/inter-hub/erasmus/erasmus-mobilnosc-studentow/erasmus-studia-za-granica/jak-wyjechac-krok-po-kroku" target="_blank" rel="noopener">Jak wyjechać – krok po kroku</a></li>
+        <li><a href="https://pg.edu.pl/inter-hub/erasmus/erasmus-mobilnosc-studentow/erasmus-studia-za-granica/zanim-wyjedziesz-ogolne-zasady" target="_blank" rel="noopener" data-i18n="link1">Zanim wyjedziesz – ogólne zasady</a></li>
+        <li><a href="https://pg.edu.pl/inter-hub/erasmus/erasmus-mobilnosc-studentow/erasmus-studia-za-granica/jak-wyjechac-krok-po-kroku" target="_blank" rel="noopener" data-i18n="link2">Jak wyjechać – krok po kroku</a></li>
       </ul>
     </div>
 
     <!-- Formularz wysyłki zgłoszenia do koordynatora -->
     <div id="email-form-sekcja" style="display: none;">
-      <h3 style="font-size: 15px; margin-bottom: 4px; color: var(--primary);">Prześlij zgłoszenie do Koordynatora Wydziałowego</h3>
-      <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 12px;">Uzupełnij poniższe dane, aby wygenerować oficjalną wiadomość ze zgłoszeniem:</p>
+      <h3 style="font-size: 15px; margin-bottom: 4px; color: var(--primary);" data-i18n="formHeading">Prześlij zgłoszenie do Koordynatora Wydziałowego</h3>
+      <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 12px;" data-i18n="formDesc">Uzupełnij poniższe dane, aby wygenerować oficjalną wiadomość ze zgłoszeniem:</p>
       
       <div class="form-group">
-        <label>Imię i nazwisko studenta:</label>
+        <label data-i18n="formName">Imię i nazwisko studenta:</label>
         <input type="text" id="stud-nazwisko" class="form-control" placeholder="np. Jan Kowalski">
       </div>
       <div class="form-group">
-        <label>Twój studencki adres e-mail (@student.pg.edu.pl):</label>
+        <label data-i18n="formEmail">Twój studencki adres e-mail (@student.pg.edu.pl):</label>
         <input type="email" id="stud-email" class="form-control" placeholder="np. s123456@student.pg.edu.pl">
       </div>
       <div class="form-group">
-        <label>Kierunek i aktualny semestr studiów:</label>
+        <label data-i18n="formField">Kierunek i aktualny semestr studiów:</label>
         <input type="text" id="stud-kierunek" class="form-control" placeholder="np. Chemia, semestr 4 (I stopień)">
       </div>
       <div class="form-group">
-        <label>Wybrana uczelnia zagraniczna (nazwa i kraj):</label>
+        <label data-i18n="formHost">Wybrana uczelnia zagraniczna (nazwa i kraj):</label>
         <input type="text" id="stud-uczelnia" class="form-control" placeholder="np. Universitat de València (Hiszpania)">
       </div>
 
       <button type="button" id="btn-submit" class="btn-send" onclick="wyslijFormularzAutomatycznie()">
         <svg style="width:18px;height:18px;fill:currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-        Generuj i wyślij zgłoszenie
+        <span data-i18n="btnSubmit">Generuj i wyślij zgłoszenie</span>
       </button>
 
-      <button type="button" class="btn-secondary" onclick="kopiujTrescMaila()">
+      <button type="button" class="btn-secondary" onclick="kopiujTrescMaila()" data-i18n="btnCopy">
         Skopiuj treść zgłoszenia do schowka
       </button>
 
       <div id="send-status-msg"></div>
-      <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px; text-align: center;">Pamiętaj: Do wiadomości należy załączyć skan lub zdjęcie potwierdzenia braku długu ECTS z dziekanatu!</p>
+      <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px; text-align: center;" data-i18n="formNotice">Pamiętaj: Do wiadomości należy załączyć skan lub zdjęcie potwierdzenia braku długu ECTS z dziekanatu!</p>
     </div>
   </div>
 
   <footer>
-    Wydział Chemiczny Politechniki Gdańskiej • Program Erasmus+<br>
-    Weryfikator nie przetwarza danych w celach komercyjnych ani nie zapisuje ich w zewnętrznych bazach.
+    <span data-i18n="footer1">Wydział Chemiczny Politechniki Gdańskiej • Program Erasmus+</span><br>
+    <span data-i18n="footer2">Weryfikator nie przetwarza danych w celach komercyjnych ani nie zapisuje ich w zewnętrznych bazach.</span>
   </footer>
 </div>
 
@@ -636,46 +668,186 @@
   const EMAIL_KOORDYNATORA = "joanna.grabowska@pg.edu.pl"; // <-- TUTAJ WPISZ SWÓJ ADRES E-MAIL
   // ================================================
 
+  let aktualnyJezyk = 'pl';
   let wykorzystaneMiesiace = 0;
 
-  // Ustawienie adresu w nagłówku
+  // Słownik tłumaczeń UI
+  const t = {
+    pl: {
+      badge: "Politechnika Gdańska",
+      title: "Kwalifikacja Erasmus+",
+      subtitle: "Wydział Chemiczny • Autodiagnoza formalna kandydata",
+      coordTitle: "Koordynator Wydziałowy ds. Erasmus+ (WCh PG):",
+      coordEmailLabel: "Adres e-mail:",
+      coordNote: "Obsługa studentów I i II stopnia (domena @student.pg.edu.pl)",
+      q1: "Czy uczelnia partnerska ma podpisaną umowę z WCh PG?",
+      q1_opt1: "Tak, znajduje się na liście umów WCh",
+      q1_opt2: "Nie ma podpisanej umowy z WCh",
+      q1_opt3: "Nie wiem / chcę sprawdzić listę",
+      q1_opt4: "Jeszcze nie wybrałem/-am uczelni",
+      q2: "Kiedy planujesz rozpocząć wyjazd?",
+      q2_opt1: "W nadchodzącym semestrze",
+      q2_opt2: "W dalszej przyszłości",
+      q3: "Na jaki okres planujesz wyjazd?",
+      q3_opt1: "1 semestr (ok. 5 mies.)",
+      q3_opt2: "Cały rok akademicki (2 sem.)",
+      q4: "Aktualny etap i semestr studiów:",
+      q4_opt1: "I stopień (inż.): 1. lub 2. semestr",
+      q4_opt2: "I stopień (inż.): 3. semestr lub wyższy",
+      q4_opt3: "II stopień (studia magisterskie)",
+      q4_opt4: "Szkoła Doktorska",
+      q5: "Czy masz niezaliczony przedmiot / dług punktowy ECTS?",
+      q5_opt1: "Nie (wszystko zaliczone)",
+      q5_opt2: "Tak (posiadam zaległość)",
+      q6: "Wcześniejsze wyjazdy Erasmus+ na OBECNYM stopniu studiów:",
+      q6_hint: "Maksymalny łączny kapitał mobilności to 12 miesięcy na danym stopniu studiów.",
+      stepper_unit: "miesięcy wykorzystanych",
+      q7: "Certyfikat językowy (język wykładowy uczelni przyjmującej):",
+      q7_opt1: "Posiadam wymagany certyfikat językowy",
+      q7_opt2: "Nie posiadam, a uczelnia przyjmująca go NIE wymaga",
+      q7_opt3: "Nie posiadam, a uczelnia przyjmująca go WYMAGA",
+      q7_opt4: "Nie posiadam i nie wiem, czy jest wymagany",
+      linksTitle: "Oficjalne procedury Politechniki Gdańskiej:",
+      link1: "Zanim wyjedziesz – ogólne zasady",
+      link2: "Jak wyjechać – krok po kroku",
+      formHeading: "Prześlij zgłoszenie do Koordynatora Wydziałowego",
+      formDesc: "Uzupełnij poniższe dane, aby wygenerować oficjalną wiadomość ze zgłoszeniem:",
+      formName: "Imię i nazwisko studenta:",
+      formEmail: "Twój studencki adres e-mail (@student.pg.edu.pl):",
+      formField: "Kierunek i aktualny semestr studiów:",
+      formHost: "Wybrana uczelnia zagraniczna (nazwa i kraj):",
+      btnSubmit: "Generuj i wyślij zgłoszenie",
+      btnCopy: "Skopiuj treść zgłoszenia do schowka",
+      formNotice: "Pamiętaj: Do wiadomości należy załączyć skan lub zdjęcie potwierdzenia braku długu ECTS z dziekanatu!",
+      footer1: "Wydział Chemiczny Politechniki Gdańskiej • Program Erasmus+",
+      footer2: "Weryfikator nie przetwarza danych w celach komercyjnych ani nie zapisuje ich w zewnętrznych bazach."
+    },
+    en: {
+      badge: "Gdańsk University of Technology",
+      title: "Erasmus+ Eligibility Check",
+      subtitle: "Faculty of Chemistry • Applicant's Self-Assessment",
+      coordTitle: "Departmental Erasmus+ Coordinator (Faculty of Chemistry):",
+      coordEmailLabel: "Email address:",
+      coordNote: "Serving 1st and 2nd cycle degree students (@student.pg.edu.pl)",
+      q1: "Does the partner university have a bilateral agreement with our Faculty?",
+      q1_opt1: "Yes, it is on the Faculty's bilateral agreements list",
+      q1_opt2: "No, there is no active agreement",
+      q1_opt3: "I don't know / I want to check the list",
+      q1_opt4: "I haven't chosen a university yet",
+      q2: "When do you plan to start your exchange?",
+      q2_opt1: "In the upcoming semester",
+      q2_opt2: "In the further future",
+      q3: "Planned duration of the stay:",
+      q3_opt1: "1 semester (approx. 5 months)",
+      q3_opt2: "Full academic year (2 semesters)",
+      q4: "Current stage and semester of study:",
+      q4_opt1: "1st cycle (B.Sc./Eng.): 1st or 2nd semester",
+      q4_opt2: "1st cycle (B.Sc./Eng.): 3rd semester or higher",
+      q4_opt3: "2nd cycle (M.Sc./Master's degree)",
+      q4_opt4: "Doctoral School",
+      q5: "Do you have any failed courses or ECTS credit debt?",
+      q5_opt1: "No (all courses completed and passed)",
+      q5_opt2: "Yes (I have an active course deficit / conditional pass)",
+      q6: "Previous Erasmus+ mobilities during your CURRENT degree cycle:",
+      q6_hint: "The maximum total mobility capital is 12 months per study cycle.",
+      stepper_unit: "months used",
+      q7: "Language certificate (instruction language at the host university):",
+      q7_opt1: "I have the required language certificate",
+      q7_opt2: "I do not have one, but the host university does NOT require it",
+      q7_opt3: "I do not have one, and the host university DOES require it",
+      q7_opt4: "I do not have one and I do not know if it is required",
+      linksTitle: "Official Gdańsk Tech Erasmus+ procedures:",
+      link1: "Before you leave – General rules",
+      link2: "Step-by-step application guide",
+      formHeading: "Send your pre-application to the Departmental Coordinator",
+      formDesc: "Fill in the details below to generate an official pre-application email:",
+      formName: "Student's Full Name:",
+      formEmail: "Your university email address (@student.pg.edu.pl):",
+      formField: "Field of study and current semester:",
+      formHost: "Selected host university (name and country):",
+      btnSubmit: "Generate and send application",
+      btnCopy: "Copy application text to clipboard",
+      formNotice: "Note: You must attach a scan/photo of the Dean's Office confirmation of zero ECTS debt to your email!",
+      footer1: "Faculty of Chemistry, Gdańsk University of Technology • Erasmus+ Programme",
+      footer2: "This self-assessment tool does not store or process data in external commercial databases."
+    }
+  };
+
+  function ustawJezyk(lang) {
+    aktualnyJezyk = lang;
+    document.documentElement.lang = lang;
+    
+    document.getElementById('btn-lang-pl').classList.toggle('active', lang === 'pl');
+    document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
+
+    // Aktualizacja statycznych tekstów UI
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[lang][key]) {
+        el.innerText = t[lang][key];
+      }
+    });
+
+    // Zmiana placeholderów w formularzu
+    if (lang === 'en') {
+      document.getElementById('stud-nazwisko').placeholder = "e.g. John Smith";
+      document.getElementById('stud-email').placeholder = "e.g. s123456@student.pg.edu.pl";
+      document.getElementById('stud-kierunek').placeholder = "e.g. Chemistry, semester 4 (1st cycle)";
+      document.getElementById('stud-uczelnia').placeholder = "e.g. Universitat de València (Spain)";
+    } else {
+      document.getElementById('stud-nazwisko').placeholder = "np. Jan Kowalski";
+      document.getElementById('stud-email').placeholder = "np. s123456@student.pg.edu.pl";
+      document.getElementById('stud-kierunek').placeholder = "np. Chemia, semestr 4 (I stopień)";
+      document.getElementById('stud-uczelnia').placeholder = "np. Universitat de València (Hiszpania)";
+    }
+
+    obliczWynik();
+  }
+
   document.getElementById('label-email').innerText = EMAIL_KOORDYNATORA;
 
-  // Funkcja sprawdzająca aktualną datę i status naboru na WCh PG
+  // Funkcja sprawdzająca aktualną datę i nabór na WCh PG
   function sprawdzTerminRekrutacji() {
     const dzis = new Date();
     const rok = dzis.getFullYear();
 
-    // Terminy graniczne: 15 maja (miesiąc 4) i 15 listopada (miesiąc 10)
     const terminMaj = new Date(rok, 4, 15, 23, 59, 59);
     const terminListopad = new Date(rok, 10, 15, 23, 59, 59);
 
     let najblizszyTermin;
-    let semestrDocelowy;
+    let semestrDocelowyPL, semestrDocelowyEN;
 
     if (dzis <= terminMaj) {
       najblizszyTermin = terminMaj;
-      semestrDocelowy = "semestr zimowy nadchodzącego roku akademickiego";
+      semestrDocelowyPL = "semestr zimowy nadchodzącego roku akademickiego";
+      semestrDocelowyEN = "the winter semester of the upcoming academic year";
     } else if (dzis <= terminListopad) {
       najblizszyTermin = terminListopad;
-      semestrDocelowy = "semestr letni bieżącego roku akademickiego";
+      semestrDocelowyPL = "semestr letni bieżącego roku akademickiego";
+      semestrDocelowyEN = "the summer semester of the current academic year";
     } else {
       najblizszyTermin = new Date(rok + 1, 4, 15, 23, 59, 59);
-      semestrDocelowy = "semestr zimowy kolejnego roku akademickiego";
+      semestrDocelowyPL = "semestr zimowy kolejnego roku akademickiego";
+      semestrDocelowyEN = "the winter semester of the following academic year";
     }
 
     const roznicaMs = najblizszyTermin - dzis;
     const pozostaleDni = Math.max(0, Math.ceil(roznicaMs / (1000 * 60 * 60 * 24)));
 
+    const locale = (aktualnyJezyk === 'en') ? 'en-GB' : 'pl-PL';
     const opcjeFormat = { day: 'numeric', month: 'long', year: 'numeric' };
-    const dataGranicznaTekst = najblizszyTermin.toLocaleDateString('pl-PL', opcjeFormat);
-    const dataDzisTekst = dzis.toLocaleDateString('pl-PL', opcjeFormat);
+    const dataGranicznaTekst = najblizszyTermin.toLocaleDateString(locale, opcjeFormat);
+    const dataDzisTekst = dzis.toLocaleDateString(locale, opcjeFormat);
 
-    let html = `<strong>Status naboru na WCh PG:</strong> Dzisiaj jest <strong>${dataDzisTekst}</strong>. Aktualna tura dotyczy wyjazdów na <strong>${semestrDocelowy}</strong>.<br>`;
-    html += `Termin składania dokumentów upływa <strong>${dataGranicznaTekst}</strong> (pozostało: <strong>${pozostaleDni} dni</strong>).<br>`;
-    html += `<span style="display:inline-block; margin-top:4px; font-size:12.5px; color:#b45309;">⚠️ <strong>Ważne:</strong> Terminy nominacji i naboru na uczelniach zagranicznych mogą upływać wcześniej niż termin wydziałowy! Sprawdź niezwłocznie stronę uczelni partnerskiej.</span>`;
+    if (aktualnyJezyk === 'en') {
+      return `<strong>Recruitment Status at Gdańsk Tech:</strong> Today is <strong>${dataDzisTekst}</strong>. The active round is for <strong>${semestrDocelowyEN}</strong>.<br>` +
+             `Faculty application deadline: <strong>${dataGranicznaTekst}</strong> (<strong>${pozostaleDni} days remaining</strong>).<br>` +
+             `<span style="display:inline-block; margin-top:4px; font-size:12.5px; color:#b45309;">⚠️ <strong>Important:</strong> Partner universities often have earlier nomination/application deadlines! Check your host university's website immediately.</span>`;
+    }
 
-    return html;
+    return `<strong>Status naboru na WCh PG:</strong> Dzisiaj jest <strong>${dataDzisTekst}</strong>. Aktualna tura dotyczy wyjazdów na <strong>${semestrDocelowyPL}</strong>.<br>` +
+           `Termin składania dokumentów upływa <strong>${dataGranicznaTekst}</strong> (pozostało: <strong>${pozostaleDni} dni</strong>).<br>` +
+           `<span style="display:inline-block; margin-top:4px; font-size:12.5px; color:#b45309;">⚠️ <strong>Ważne:</strong> Terminy nominacji i naboru na uczelniach zagranicznych mogą upływać wcześniej niż termin wydziałowy! Sprawdź niezwłocznie stronę uczelni partnerskiej.</span>`;
   }
 
   function zmienMiesiace(delta) {
@@ -691,6 +863,7 @@
     const etap = document.querySelector('input[name="etap"]:checked').value;
     const zaleglosci = document.querySelector('input[name="zaleglosci"]:checked').value;
     const jezyk = document.querySelector('input[name="jezyk"]:checked').value;
+    const isEn = (aktualnyJezyk === 'en');
     
     // 1. Podpowiedź pod pytaniem 1 (Umowa)
     const infoUmowa = document.getElementById('info-umowa');
@@ -699,19 +872,25 @@
       infoUmowa.style.background = '#eff6ff';
       infoUmowa.style.border = '1px solid #bfdbfe';
       infoUmowa.style.color = '#1e40af';
-      infoUmowa.innerHTML = `Sprawdź wykaz: <a href="https://cdn.files.pg.edu.pl/main/DMWA/Erasmus%2B/og%C3%B3lne_umowy%20i%20inne/Lista%20um%C3%B3w%20Erasmus%2B%20Politechnika%20Gda%C5%84ska.pdf" target="_blank" rel="noopener" style="font-weight:700; text-decoration:underline;">Aktualna lista umów bilateralnych PG (PDF)</a>.`;
+      infoUmowa.innerHTML = isEn
+        ? `Check agreements: <a href="https://cdn.files.pg.edu.pl/main/DMWA/Erasmus%2B/og%C3%B3lne_umowy%20i%20inne/Lista%20um%C3%B3w%20Erasmus%2B%20Politechnika%20Gda%C5%84ska.pdf" target="_blank" rel="noopener" style="font-weight:700; text-decoration:underline;">Current list of bilateral agreements at Gdańsk Tech (PDF)</a>.`
+        : `Sprawdź wykaz: <a href="https://cdn.files.pg.edu.pl/main/DMWA/Erasmus%2B/og%C3%B3lne_umowy%20i%20inne/Lista%20um%C3%B3w%20Erasmus%2B%20Politechnika%20Gda%C5%84ska.pdf" target="_blank" rel="noopener" style="font-weight:700; text-decoration:underline;">Aktualna lista umów bilateralnych PG (PDF)</a>.`;
     } else if (umowa === 'nie') {
       infoUmowa.style.display = 'block';
       infoUmowa.style.background = '#fef2f2';
       infoUmowa.style.border = '1px solid #fecaca';
       infoUmowa.style.color = '#991b1b';
-      infoUmowa.innerHTML = `<strong>Ważne:</strong> Skontaktuj się z koordynatorem w celu ustalenia, czy istnieje możliwość podpisania nowej umowy. Proces ten trwa wiele miesięcy i w takiej ścieżce nie będzie możliwości wyjazdu w najbliższym semestrze.`;
+      infoUmowa.innerHTML = isEn
+        ? `<strong>Important:</strong> Contact the coordinator to see if a new agreement can be initiated. This takes many months, so mobility in the upcoming semester will not be possible.`
+        : `<strong>Ważne:</strong> Skontaktuj się z koordynatorem w celu ustalenia, czy istnieje możliwość podpisania nowej umowy. Proces ten trwa wiele miesięcy i w takiej ścieżce nie będzie możliwości wyjazdu w najbliższym semestrze.`;
     } else if (umowa === 'nie_wybralem') {
       infoUmowa.style.display = 'block';
       infoUmowa.style.background = '#fffbeb';
       infoUmowa.style.border = '1px solid #fde68a';
       infoUmowa.style.color = '#92400e';
-      infoUmowa.innerHTML = `Zacznij proces od wyboru konkretnej uczelni partnerskiej, aby można było sprawdzić, czy kwalifikujesz się do wyjazdu.`;
+      infoUmowa.innerHTML = isEn
+        ? `Start by choosing a specific host university from the Faculty's offer to verify your eligibility.`
+        : `Zacznij proces od wyboru konkretnej uczelni partnerskiej, aby można było sprawdzić, czy kwalifikujesz się do wyjazdu.`;
     } else {
       infoUmowa.style.display = 'none';
     }
@@ -723,7 +902,9 @@
       infoDoktoranci.style.background = '#fffbeb';
       infoDoktoranci.style.border = '1px solid #fde68a';
       infoDoktoranci.style.color = '#92400e';
-      infoDoktoranci.innerHTML = `<strong>Informacja dla doktorantów:</strong> Koordynator wydziałowy obsługuje studentów I oraz II stopnia. W sprawie wyjazdów w ramach Szkoły Doktorskiej skontaktuj się bezpośrednio z <strong>Biurem Szkoły Doktorskiej PG</strong>.`;
+      infoDoktoranci.innerHTML = isEn
+        ? `<strong>Notice for PhD students:</strong> The Faculty Coordinator manages 1st and 2nd cycle degree students. For mobilities within the Doctoral School, please contact the <strong>Gdańsk Tech Doctoral School Office</strong> directly.`
+        : `<strong>Informacja dla doktorantów:</strong> Koordynator wydziałowy obsługuje studentów I oraz II stopnia. W sprawie wyjazdów w ramach Szkoły Doktorskiej skontaktuj się bezpośrednio z <strong>Biurem Szkoły Doktorskiej PG</strong>.`;
     } else {
       infoDoktoranci.style.display = 'none';
     }
@@ -735,19 +916,25 @@
       infoJezyk.style.background = '#eff6ff';
       infoJezyk.style.border = '1px solid #bfdbfe';
       infoJezyk.style.color = '#1e40af';
-      infoJezyk.innerHTML = `<strong>Ważna informacja:</strong> Przed kwalifikacją będziesz musiał(-a) odbyć <strong>krótką rozmowę z koordynatorem wydziałowym w języku wykładowym uczelni przyjmującej</strong>, w ramach potwierdzenia znajomości języka.`;
+      infoJezyk.innerHTML = isEn
+        ? `<strong>Important notice:</strong> Before qualification, you will need to attend a <strong>brief language interview with the Faculty Coordinator in the instruction language</strong> to confirm proficiency.`
+        : `<strong>Ważna informacja:</strong> Przed kwalifikacją będziesz musiał(-a) odbyć <strong>krótką rozmowę z koordynatorem wydziałowym w języku wykładowym uczelni przyjmującej</strong>, w ramach potwierdzenia znajomości języka.`;
     } else if (jezyk === 'nie_wymaga') {
       infoJezyk.style.display = 'block';
       infoJezyk.style.background = '#fffbeb';
       infoJezyk.style.border = '1px solid #fde68a';
       infoJezyk.style.color = '#92400e';
-      infoJezyk.innerHTML = `Istnieje możliwość uzyskania certyfikatu w Centrum Języków Obcych PG, pamiętaj jednak, że <strong>nie wszystkie uczelnie zagraniczne będą honorować taki certyfikat</strong> (wiele wymaga certyfikatów międzynarodowych).`;
+      infoJezyk.innerHTML = isEn
+        ? `You can obtain a certificate via the Gdańsk Tech Language Centre, but keep in mind that <strong>not all partner universities accept internal institutional exams</strong> (many require TOEFL/IELTS).`
+        : `Istnieje możliwość uzyskania certyfikatu w Centrum Języków Obcych PG, pamiętaj jednak, że <strong>nie wszystkie uczelnie zagraniczne będą honorować taki certyfikat</strong> (wiele wymaga certyfikatów międzynarodowych).`;
     } else if (jezyk === 'nie_nie_wiem') {
       infoJezyk.style.display = 'block';
       infoJezyk.style.background = '#fef2f2';
       infoJezyk.style.border = '1px solid #fecaca';
       infoJezyk.style.color = '#991b1b';
-      infoJezyk.innerHTML = `Musisz jak najszybciej znaleźć informację o tym, czy certyfikat jest wymagany na stronie uczelni zagranicznej lub skontaktować się bezpośrednio z koordynatorem Erasmus w uczelni przyjmującej.`;
+      infoJezyk.innerHTML = isEn
+        ? `You must promptly verify language requirements on the host university's website or contact their Erasmus coordinator.`
+        : `Musisz jak najszybciej znaleźć informację o tym, czy certyfikat jest wymagany na stronie uczelni zagranicznej lub skontaktować się bezpośrednio z koordynatorem Erasmus w uczelni przyjmującej.`;
     } else {
       infoJezyk.style.display = 'none';
     }
@@ -758,26 +945,38 @@
 
     // Warunek: Szkoła Doktorska
     if (etap === 'dokt') {
-      blokady.push("Jesteś doktorantem w Szkole Doktorskiej. Koordynator wydziałowy prowadzi kwalifikację wyłącznie dla studentów I i II stopnia. Skontaktuj się ze Szkołą Doktorską PG w celu realizacji procedury wyjazdowej.");
+      blokady.push(isEn 
+        ? "You are a Doctoral School student. The Faculty Coordinator conducts qualification exclusively for 1st and 2nd cycle students. Please contact the Doctoral School Office."
+        : "Jesteś doktorantem w Szkole Doktorskiej. Koordynator wydziałowy prowadzi kwalifikację wyłącznie dla studentów I i II stopnia. Skontaktuj się ze Szkołą Doktorską PG w celu realizacji procedury wyjazdowej.");
     }
 
     // Warunek: Umowa
     if (umowa === 'nie') {
-      blokady.push("Brak umowy z wybraną uczelnią. Podpisanie nowej umowy trwa wiele miesięcy i wyklucza wyjazd w najbliższym semestrze.");
+      blokady.push(isEn
+        ? "No bilateral agreement with the chosen university. Establishing a new agreement takes months and precludes exchange in the upcoming semester."
+        : "Brak umowy z wybraną uczelnią. Podpisanie nowej umowy trwa wiele miesięcy i wyklucza wyjazd w najbliższym semestrze.");
     } else if (umowa === 'nie_wybralem') {
-      blokady.push("Brak wybranej uczelni docelowej. Wybór jednostki partnerskiej jest warunkiem koniecznym do oceny możliwości wyjazdu.");
+      blokady.push(isEn
+        ? "No host university selected. Choosing a specific partner institution is required to evaluate eligibility."
+        : "Brak wybranej uczelni docelowej. Wybór jednostki partnerskiej jest warunkiem koniecznym do oceny możliwości wyjazdu.");
     }
 
-    // Warunek: Semestr dla I stopnia
+    // Warunek: Semestr I stopnia
     if (etap === 'lic_1') {
-      blokady.push("Wyjazd na I stopniu studiów jest możliwy najwcześniej od 2. roku (od 3. semestru).");
+      blokady.push(isEn
+        ? "Mobility during 1st cycle studies is permitted starting from the 2nd year (from the 3rd semester)."
+        : "Wyjazd na I stopniu studiów jest możliwy najwcześniej od 2. roku (od 3. semestru).");
     }
 
-    // Warunek: Dług ECTS
+    // Warunek: Dług punktowy
     if (zaleglosci === 'tak') {
-      blokady.push("Posiadanie zaległości punktowych / warunku formalnie wyklucza z rekrutacji do czasu ich uregulowania.");
+      blokady.push(isEn
+        ? "Having course deficits or ECTS debt formally disqualifies you from exchange until all courses are passed."
+        : "Posiadanie zaległości punktowych / warunku formalnie wyklucza z rekrutacji do czasu ich uregulowania.");
     } else {
-      formalneWymogi.push("<strong>Brak długu punktowego:</strong> Do dokumentów musisz dołączyć oficjalne potwierdzenie braku zaległości uzyskane w dziekanacie WCh PG.");
+      formalneWymogi.push(isEn
+        ? "<strong>Zero ECTS debt:</strong> You must deliver an official confirmation from the Faculty Dean's Office stating no credit deficits."
+        : "<strong>Brak długu punktowego:</strong> Do dokumentów musisz dołączyć oficjalne potwierdzenie braku zaległości uzyskane w dziekanacie WCh PG.");
     }
 
     // Warunek: Kapitał mobilności
@@ -785,19 +984,24 @@
     const pozostalyKapital = 12 - wykorzystaneMiesiace;
     
     if (pozostalyKapital <= 0) {
-      blokady.push("Wykorzystano pełen 12-miesięczny kapitał mobilności dla obecnego stopnia studiów.");
+      blokady.push(isEn
+        ? "You have already used the full 12-month mobility capital for your current study cycle."
+        : "Wykorzystano pełen 12-miesięczny kapitał mobilności dla obecnego stopnia studiów.");
     } else if (planowaneMiesiace > pozostalyKapital) {
-      blokady.push(`Planowany wyjazd (${planowaneMiesiace} mies.) przekracza Twój pozostały kapitał (${pozostalyKapital} mies.). Możesz wyjechać maksymalnie na ${pozostalyKapital} miesięcy.`);
+      blokady.push(isEn
+        ? `Planned stay (${planowaneMiesiace} mos.) exceeds your remaining capital (${pozostalyKapital} mos.). Maximum allowed stay is ${pozostalyKapital} months.`
+        : `Planowany wyjazd (${planowaneMiesiace} mies.) przekracza Twój pozostały kapitał (${pozostalyKapital} mies.). Możesz wyjechać maksymalnie na ${pozostalyKapital} miesięcy.`);
     }
 
-    // Terminy - dynamiczne sprawdzanie daty
+    // Terminy
     if (kiedy === 'najblizszy') {
       terminyWskazowki.push(sprawdzTerminRekrutacji());
     } else {
-      terminyWskazowki.push("Planujesz wyjazd w dalszej przyszłości. Pamiętaj, że nabory na WCh PG zamykają się <strong>15 listopada</strong> (na semestr letni) oraz <strong>15 maja</strong> (na semestr zimowy).");
+      terminyWskazowki.push(isEn
+        ? "Planning exchange in the further future. Deadlines at Gdańsk Tech close on <strong>November 15th</strong> (summer semester) and <strong>May 15th</strong> (winter semester)."
+        : "Planujesz wyjazd w dalszej przyszłości. Pamiętaj, że nabory na WCh PG zamykają się <strong>15 listopada</strong> (na semestr letni) oraz <strong>15 maja</strong> (na semestr zimowy).");
     }
 
-    // Prezentacja panelu wyników
     const sekcja = document.getElementById('wynik-sekcja');
     const statusDiv = document.getElementById('wynik-status');
     const trescDiv = document.getElementById('wynik-tresc');
@@ -807,44 +1011,48 @@
 
     if (blokady.length > 0) {
       sekcja.className = 'wynik-negatywny';
-      statusDiv.innerHTML = `<span>✕</span> Wymagane działania formalne`;
+      statusDiv.innerHTML = `<span>✕</span> ` + (isEn ? "Formal Requirements Unmet" : "Wymagane działania formalne");
       emailSekcja.style.display = 'none';
       
-      let html = `<p style="margin-bottom:8px; font-weight:700;">Aktualnie nie spełniasz wszystkich warunków kwalifikacji:</p><ul class="wynik-lista">`;
+      let html = `<p style="margin-bottom:8px; font-weight:700;">` + (isEn ? "Currently unmet qualification criteria:" : "Aktualnie nie spełniasz wszystkich warunków kwalifikacji:") + `</p><ul class="wynik-lista">`;
       blokady.forEach(b => html += `<li>${b}</li>`);
       html += `</ul>`;
 
       if (terminyWskazowki.length > 0 && etap !== 'dokt') {
-        html += `<div class="info-box"><h4>Harmonogram i terminy:</h4><ul class="wynik-lista" style="margin-bottom:0;">`;
+        html += `<div class="info-box"><h4>` + (isEn ? "Schedule & Deadlines:" : "Harmonogram i terminy:") + `</h4><ul class="wynik-lista" style="margin-bottom:0;">`;
         terminyWskazowki.forEach(t => html += `<li>${t}</li>`);
         html += `</ul></div>`;
       }
       trescDiv.innerHTML = html;
     } else {
       sekcja.className = 'wynik-pozytywny';
-      statusDiv.innerHTML = `<span>✓</span> Wstępna kwalifikacja pozytywna!`;
+      statusDiv.innerHTML = `<span>✓</span> ` + (isEn ? "Preliminary Eligibility Confirmed!" : "Wstępna kwalifikacja pozytywna!");
       emailSekcja.style.display = 'block';
       
-      let html = `<p style="margin-bottom:10px; font-weight:600;">Spełniasz podstawowe kryteria formalne do ubiegania się o wyjazd na WCh PG.</p>`;
+      let html = `<p style="margin-bottom:10px; font-weight:600;">` + (isEn ? "You meet the core criteria to apply for Erasmus+ at the Faculty of Chemistry." : "Spełniasz podstawowe kryteria formalne do ubiegania się o wyjazd na WCh PG.") + `</p>`;
       
-      // 1. Najpierw wytyczne rekrutacyjne (dynamiczna data naboru)
+      // 1. Terminy
       if (terminyWskazowki.length > 0) {
         html += `<div class="info-box" style="border-left: 4px solid #0284c7;">
-          <h4 style="color: #0369a1;">Ważne wytyczne rekrutacyjne:</h4>
+          <h4 style="color: #0369a1;">` + (isEn ? "Important Recruitment Guidelines:" : "Ważne wytyczne rekrutacyjne:") + `</h4>
           <div style="font-size:13.5px; line-height:1.5;">${terminyWskazowki[0]}</div>
         </div>`;
       }
 
-      // 2. Następnie komplet informacji do przekazania koordynatorowi
+      // 2. Wymagane informacje do przekazania
+      const okresTekst = (okres === '2_semestry') 
+        ? (isEn ? '2 semesters (full academic year)' : '2 semestry (rok akademicki)')
+        : (isEn ? '1 semester' : '1 semestr');
+
       html += `<div class="info-box" style="margin-top:12px;">
-        <h4>Komplet informacji wymaganych do przekazania Koordynatorowi:</h4>
+        <h4>` + (isEn ? "Complete information required by the Faculty Coordinator:" : "Komplet informacji wymaganych do przekazania Koordynatorowi:") + `</h4>
         <ul class="wynik-lista" style="margin-bottom:0;">
-          <li><strong>Aktualny semestr i kierunek studiów</strong> na Wydziale Chemicznym PG.</li>
+          <li><strong>` + (isEn ? "Current study stage:" : "Aktualny semestr i kierunek studiów:") + `</strong> ` + (isEn ? "field of study and current semester at Gdańsk Tech." : "na Wydziale Chemicznym PG.") + `</li>
           <li>${formalneWymogi[0]}</li>
-          <li><strong>Pełna nazwa uczelni partnerskiej</strong>, do której planujesz wyjazd.</li>
-          <li><strong>Planowany okres pobytu:</strong> ${okres === '2_semestry' ? '2 semestry (rok akademicki)' : '1 semestr'}.</li>
-          <li><strong>Kwestia językowa:</strong> informacja o posiadaniu certyfikatu lub gotowości do rozmowy językowej.</li>
-          <li><strong>Wcześniejsze wyjazdy:</strong> deklaracja o kapitale (wykorzystano: ${wykorzystaneMiesiace} mies., pozostało: ${pozostalyKapital} mies.).</li>
+          <li><strong>` + (isEn ? "Host institution:" : "Pełna nazwa uczelni partnerskiej:") + `</strong> ` + (isEn ? "exact name of the selected university." : "do której planujesz wyjazd.") + `</li>
+          <li><strong>` + (isEn ? "Duration:" : "Planowany okres pobytu:") + `</strong> ${okresTekst}.</li>
+          <li><strong>` + (isEn ? "Language proficiency:" : "Kwestia językowa:") + `</strong> ` + (isEn ? "certificate details or readiness for a language interview." : "informacja o posiadaniu certyfikatu lub gotowości do rozmowy językowej.") + `</li>
+          <li><strong>` + (isEn ? "Mobility capital:" : "Wcześniejsze wyjazdy:") + `</strong> ` + (isEn ? `used: ${wykorzystaneMiesiace} mos., remaining: ${pozostalyKapital} mos.` : `wykorzystano: ${wykorzystaneMiesiace} mies., pozostało: ${pozostalyKapital} mies.`) + `</li>
         </ul>
       </div>`;
 
@@ -852,22 +1060,151 @@
     }
   }
 
-  // Generowanie ustrukturyzowanej treści zgłoszenia
+  // Generowanie treści maila
   function generujTrescZgloszenia() {
     const nazwisko = document.getElementById('stud-nazwisko').value.trim();
     const email = document.getElementById('stud-email').value.trim();
     const kierunek = document.getElementById('stud-kierunek').value.trim();
     const uczelnia = document.getElementById('stud-uczelnia').value.trim();
-    const okres = document.querySelector('input[name="okres"]:checked').value === '2_semestry' ? '2 semestry (cały rok akademicki)' : '1 semestr';
+    const isEn = (aktualnyJezyk === 'en');
+    
+    const okres = document.querySelector('input[name="okres"]:checked').value === '2_semestry' 
+      ? (isEn ? '2 semesters (full academic year)' : '2 semestry (cały rok akademicki)')
+      : (isEn ? '1 semester' : '1 semestr');
+
     const jezykRadio = document.querySelector('input[name="jezyk"]:checked').value;
     
     let jezykOpis = "";
-    if (jezykRadio === 'posiadam') jezykOpis = "Posiadam wymagany certyfikat językowy";
-    if (jezykRadio === 'nie_nie_wymaga') jezykOpis = "Brak certyfikatu (uczelnia nie wymaga - proszę o wyznaczenie terminu rozmowy weryfikacyjnej z Koordynatorem)";
-    if (jezykRadio === 'nie_wymaga') jezykOpis = "Brak certyfikatu (uczelnia wymaga - planowane przystąpienie do egzaminu CJO PG lub zewnętrznego)";
-    if (jezykRadio === 'nie_nie_wiem') jezykOpis = "Status weryfikacji wymogów językowych w toku";
+    if (jezykRadio === 'posiadam') jezykOpis = isEn ? "I hold the required language certificate" : "Posiadam wymagany certyfikat językowy";
+    if (jezykRadio === 'nie_nie_wymaga') jezykOpis = isEn ? "No certificate (not required by host university - requesting language interview with Coordinator)" : "Brak certyfikatu (uczelnia nie wymaga - proszę o wyznaczenie terminu rozmowy weryfikacyjnej z Koordynatorem)";
+    if (jezykRadio === 'nie_wymaga') jezykOpis = isEn ? "No certificate (required by host - planning to take CJO PG or external test)" : "Brak certyfikatu (uczelnia wymaga - planowane przystąpienie do egzaminu CJO PG lub zewnętrznego)";
+    if (jezykRadio === 'nie_nie_wiem') jezykOpis = isEn ? "Language requirement verification in progress" : "Status weryfikacji wymogów językowych w toku";
 
-    const plainText = 
+    let plainText = "";
+    if (isEn) {
+      plainText = 
+`Dear Coordinator,
+
+I would like to submit my pre-application for an Erasmus+ student exchange mobility at the Faculty of Chemistry, Gdańsk Tech.
+
+CANDIDATE INFORMATION:
+- Full Name: ${nazwisko}
+- Email address: ${email}
+- Field and current semester: ${kierunek}
+
+EXCHANGE PLAN:
+- Host University: ${uczelnia}
+- Duration of stay: ${okres}
+- Previous Erasmus+ mobilities (current cycle): ${wykorzystaneMiesiace} months (remaining: ${12 - wykorzystaneMiesiace} months)
+- Language proficiency status: ${jezykOpis}
+
+ACADEMIC PROGRESS DECLARATION:
+I hereby declare that I have zero ECTS debt and no failed courses. Attached is the Dean's Office confirmation.
+
+Sincerely,
+${nazwisko}`;
+    } else {
+      plainText = 
 `Dzień dobry,
 
-Z
+Zwracam się z prośbą o wstępną weryfikację mojej kandydatury na wyjazd w ramach programu Erasmus+ na Wydziale Chemicznym PG.
+
+DANE KANDYDATA:
+- Imię i nazwisko: ${nazwisko}
+- Adres e-mail: ${email}
+- Kierunek i aktualny semestr studiów: ${kierunek}
+
+PLANOWANY WYJAZD:
+- Uczelnia partnerska: ${uczelnia}
+- Planowany okres pobytu: ${okres}
+- Wcześniejsze wyjazdy Erasmus+ (obecny stopień): ${wykorzystaneMiesiace} mies. (pozostały kapitał: ${12 - wykorzystaneMiesiace} mies.)
+- Status certyfikatu językowego: ${jezykOpis}
+
+OŚWIADCZENIE O BRAKU ZALEGŁOŚCI:
+Oświadczam, że nie posiadam zaległości punktowych ECTS. W załączeniu przesyłam potwierdzenie braku długu punktowego uzyskane w dziekanacie WCh PG.
+
+Z poważaniem,
+${nazwisko}`;
+    }
+
+    return { nazwisko, email, kierunek, uczelnia, plainText };
+  }
+
+  function wyslijFormularzAutomatycznie() {
+    const dane = generujTrescZgloszenia();
+    const statusMsg = document.getElementById('send-status-msg');
+    const isEn = (aktualnyJezyk === 'en');
+
+    if (!dane.nazwisko || !dane.email || !dane.kierunek || !dane.uczelnia) {
+      alert(isEn 
+        ? "Please fill in all fields (Full name, email, field/semester, and host university)!" 
+        : "Proszę uzupełnić wszystkie pola (imię i nazwisko, e-mail, kierunek oraz wybraną uczelnię)!");
+      return;
+    }
+
+    const tytul = isEn 
+      ? `Erasmus+ Gdańsk Tech (Chemistry) - Application: ${dane.nazwisko}`
+      : `Erasmus+ WCh PG - Zgłoszenie kandydata: ${dane.nazwisko}`;
+
+    const temat = encodeURIComponent(tytul);
+    const tresc = encodeURIComponent(dane.plainText);
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(dane.plainText).catch(() => {});
+    }
+
+    const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    statusMsg.style.display = 'block';
+
+    if (isMobile) {
+      statusMsg.style.background = '#def7ec';
+      statusMsg.style.color = '#03543f';
+      statusMsg.style.border = '1px solid #bcf0da';
+      statusMsg.innerHTML = isEn
+        ? "✓ Launching your email app with the pre-filled message...<br><span style='font-size:11.5px; color:#046c4e;'>If the app did not paste the text automatically, it has been copied to your clipboard – simply tap and hold to <strong>Paste</strong>.</span>"
+        : "✓ Uruchamianie aplikacji pocztowej z gotową wiadomością...<br><span style='font-size:11.5px; color:#046c4e;'>Gdyby aplikacja nie wstawiła tekstu automatycznie, treść zgłoszenia została skopiowana do schowka – wystarczy przytrzymać palec w polu wiadomości i wybrać <strong>Wklej</strong>.</span>";
+
+      window.location.href = `mailto:${encodeURIComponent(EMAIL_KOORDYNATORA)}?subject=${temat}&body=${tresc}`;
+    } else {
+      const webOutlookUrl = `https://outlook.office.com/mail/deeplink/compose?to=${encodeURIComponent(EMAIL_KOORDYNATORA)}&subject=${temat}&body=${tresc}`;
+      const okno = window.open(webOutlookUrl, '_blank');
+
+      if (okno) {
+        statusMsg.style.background = '#def7ec';
+        statusMsg.style.color = '#03543f';
+        statusMsg.style.border = '1px solid #bcf0da';
+        statusMsg.innerHTML = isEn
+          ? "✓ Opened a new tab in your Gdańsk Tech Outlook (M365). Review the text, attach your Dean's Office debt clearance slip, and click <strong>Send</strong>."
+          : "✓ Otwarto nową kartę w Twojej poczcie Outlook (M365). Sprawdź treść, dołącz plik/skan zaświadczenia z dziekanatu i kliknij <strong>Wyślij</strong>.";
+      } else {
+        statusMsg.style.background = '#fffbeb';
+        statusMsg.style.color = '#92400e';
+        statusMsg.style.border = '1px solid #fde68a';
+        statusMsg.innerHTML = isEn
+          ? `Pop-up blocked. <a href="${webOutlookUrl}" target="_blank" style="font-weight:700; color:#92400e; text-decoration:underline;">Click here to open Outlook M365</a> (the application text was also copied to your clipboard).`
+          : `Przeglądarka zablokowała wyskakujące okno. <a href="${webOutlookUrl}" target="_blank" style="font-weight:700; color:#92400e; text-decoration:underline;">Kliknij tutaj, aby przejść do Outlooka M365</a> (treść zgłoszenia została też skopiowana do schowka).`;
+      }
+    }
+  }
+
+  function kopiujTrescMaila() {
+    const dane = generujTrescZgloszenia();
+    const isEn = (aktualnyJezyk === 'en');
+    if (!dane.nazwisko || !dane.email) {
+      alert(isEn ? "Please enter at least your name and email." : "Uzupełnij przynajmniej swoje imię, nazwisko i e-mail.");
+      return;
+    }
+    navigator.clipboard.writeText(dane.plainText).then(() => {
+      alert(isEn 
+        ? "Application text successfully copied to clipboard! You can paste it (Ctrl+V) into any email client." 
+        : "Treść zgłoszenia została skopiowana do schowka! Możesz ją wkleić (Ctrl+V) w dowolnym programie pocztowym.");
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    ustawJezyk('pl');
+  });
+</script>
+
+</body>
+</html>
