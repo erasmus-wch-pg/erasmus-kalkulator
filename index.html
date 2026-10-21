@@ -417,6 +417,7 @@
     <div>
       <strong>Koordynator Wydziałowy ds. Erasmus+ (WCh PG):</strong><br>
       Adres e-mail: <span id="label-email" style="font-weight: 700;">joanna.grabowska@pg.edu.pl</span><br>
+      <span style="font-size: 11.5px; color: #3b82f6;">Obsługa studentów I i II stopnia (domena @student.pg.edu.pl)</span>
     </div>
   </div>
 
@@ -591,7 +592,7 @@
     <!-- Formularz wysyłki zgłoszenia do koordynatora -->
     <div id="email-form-sekcja" style="display: none;">
       <h3 style="font-size: 15px; margin-bottom: 4px; color: var(--primary);">Prześlij zgłoszenie do Koordynatora Wydziałowego</h3>
-      <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 12px;">Uzupełnij poniższe dane, aby wygenerować wiadomość ze zgłoszeniem w uczelnianym Outlooku (M365):</p>
+      <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 12px;">Uzupełnij poniższe dane, aby wygenerować oficjalną wiadomość ze zgłoszeniem:</p>
       
       <div class="form-group">
         <label>Imię i nazwisko studenta:</label>
@@ -612,7 +613,7 @@
 
       <button type="button" id="btn-submit" class="btn-send" onclick="wyslijFormularzAutomatycznie()">
         <svg style="width:18px;height:18px;fill:currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-        Otwórz gotowe zgłoszenie w Outlooku (M365)
+        Generuj i wyślij zgłoszenie
       </button>
 
       <button type="button" class="btn-secondary" onclick="kopiujTrescMaila()">
@@ -755,7 +756,7 @@
     let terminyWskazowki = [];
     let formalneWymogi = [];
 
-    // Warunek: Szkoła Doktorska (przekierowanie instytucjonalne)
+    // Warunek: Szkoła Doktorska
     if (etap === 'dokt') {
       blokady.push("Jesteś doktorantem w Szkole Doktorskiej. Koordynator wydziałowy prowadzi kwalifikację wyłącznie dla studentów I i II stopnia. Skontaktuj się ze Szkołą Doktorską PG w celu realizacji procedury wyjazdowej.");
     }
@@ -869,75 +870,4 @@
     const plainText = 
 `Dzień dobry,
 
-Zwracam się z prośbą o wstępną weryfikację mojej kandydatury na wyjazd w ramach programu Erasmus+ na Wydziale Chemicznym PG.
-
-DANE KANDYDATA:
-- Imię i nazwisko: ${nazwisko}
-- Adres e-mail: ${email}
-- Kierunek i aktualny semestr studiów: ${kierunek}
-
-PLANOWANY WYJAZD:
-- Uczelnia partnerska: ${uczelnia}
-- Planowany okres pobytu: ${okres}
-- Wcześniejsze wyjazdy Erasmus+ (obecny stopień): ${wykorzystaneMiesiace} mies. (pozostały kapitał: ${12 - wykorzystaneMiesiace} mies.)
-- Status certyfikatu językowego: ${jezykOpis}
-
-OŚWIADCZENIE O BRAKU ZALEGŁOŚCI:
-Oświadczam, że nie posiadam zaległości punktowych ECTS. W załączeniu przesyłam potwierdzenie braku długu punktowego uzyskane w dziekanacie WCh PG.
-
-Z poważaniem,
-${nazwisko}`;
-
-    return { nazwisko, email, kierunek, uczelnia, plainText };
-  }
-
-  // Otwarcie przygotowanego maila bezpośrednio w przeglądarkowym Outlooku M365
-  function wyslijFormularzAutomatycznie() {
-    const dane = generujTrescZgloszenia();
-    const statusMsg = document.getElementById('send-status-msg');
-
-    if (!dane.nazwisko || !dane.email || !dane.kierunek || !dane.uczelnia) {
-      alert("Proszę uzupełnić wszystkie pola (imię i nazwisko, e-mail, kierunek oraz wybraną uczelnię)!");
-      return;
-    }
-
-    const temat = encodeURIComponent(`Erasmus+ WCh PG - Zgłoszenie kandydata: ${dane.nazwisko}`);
-    const tresc = encodeURIComponent(dane.plainText);
-
-    const webOutlookUrl = `https://outlook.office.com/mail/deeplink/compose?to=${encodeURIComponent(EMAIL_KOORDYNATORA)}&subject=${temat}&body=${tresc}`;
-    const okno = window.open(webOutlookUrl, '_blank');
-
-    statusMsg.style.display = 'block';
-
-    if (okno) {
-      statusMsg.style.background = '#def7ec';
-      statusMsg.style.color = '#03543f';
-      statusMsg.style.border = '1px solid #bcf0da';
-      statusMsg.innerHTML = "✓ Otwarto nową kartę w Twojej uczelnianej poczcie Outlook (M365). Sprawdź treść, dołącz plik/skan zaświadczenia z dziekanatu i kliknij <strong>Wyślij</strong>.";
-    } else {
-      navigator.clipboard.writeText(dane.plainText);
-      statusMsg.style.background = '#fffbeb';
-      statusMsg.style.color = '#92400e';
-      statusMsg.style.border = '1px solid #fde68a';
-      statusMsg.innerHTML = `Przeglądarka zablokowała wyskakujące okno. <a href="${webOutlookUrl}" target="_blank" style="font-weight:700; color:#92400e; text-decoration:underline;">Kliknij tutaj, aby przejść do Outlooka M365</a> (treść zgłoszenia została też skopiowana do schowka).`;
-    }
-  }
-
-  // Kopiowanie do schowka
-  function kopiujTrescMaila() {
-    const dane = generujTrescZgloszenia();
-    if (!dane.nazwisko || !dane.email) {
-      alert("Uzupełnij przynajmniej swoje imię, nazwisko i e-mail.");
-      return;
-    }
-    navigator.clipboard.writeText(dane.plainText).then(() => {
-      alert("Treść zgłoszenia została skopiowana do schowka! Możesz ją wkleić (Ctrl+V) w dowolnym programie pocztowym.");
-    });
-  }
-
-  // Inicjalizacja przy otwarciu
-  document.addEventListener('DOMContentLoaded', obliczWynik);
-</script>
-
-</body>
-</html>
+Z
