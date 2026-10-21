@@ -1,0 +1,89 @@
+<div id="erasmus-kalkulator" style="max-width: 650px; font-family: sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+  <h3 style="margin-top:0;">Autodiagnoza: Czy możesz wyjechać na Erasmusa?</h3>
+  
+  <label><strong>1. Twój aktualny etap studiów:</strong></label><br>
+  <select id="studia" style="width: 100%; margin: 8px 0 15px; padding: 8px;">
+    <option value="lic_1">I stopień – 1. lub 2. semestr</option>
+    <option value="lic_wyzej">I stopień – 3. semestr lub wyżej</option>
+    <option value="mgr">II stopień (magisterskie)</option>
+    <option value="dokt">Szkoła Doktorska</option>
+  </select>
+
+  <label><strong>2. Czy posiadasz zaległości / dług kredytowy z poprzednich semestrów?</strong></label><br>
+  <select id="zaleglosci" style="width: 100%; margin: 8px 0 15px; padding: 8px;">
+    <option value="nie">Nie, wszystkie przedmioty mam zaliczone</option>
+    <option value="tak">Tak, posiadam niezaliczony przedmiot / warunek</option>
+  </select>
+
+  <label><strong>3. Ile miesięcy spędziłeś/-aś już na wymianie Erasmus na OBECNYM stopniu studiów?</strong></label><br>
+  <input type="number" id="miesiace" min="0" max="12" value="0" style="width: 100%; margin: 8px 0 15px; padding: 8px; box-sizing: border-box;">
+
+  <label><strong>4. Czy posiadasz certyfikat językowy zgodny z wymogami uczelni partnerskiej?</strong></label><br>
+  <select id="jezyk" style="width: 100%; margin: 8px 0 15px; padding: 8px;">
+    <option value="tak">Tak, posiadam honorowany certyfikat</option>
+    <option value="nie">Nie mam certyfikatu</option>
+  </select>
+
+  <button onclick="sprawdzKwalifikacje()" style="background-color: #003366; color: white; border: none; padding: 10px 20px; font-size: 15px; border-radius: 4px; cursor: pointer;">
+    Sprawdź wynik
+  </button>
+
+  <div id="wynik" style="margin-top: 20px; padding: 15px; display: none; border-radius: 4px;"></div>
+</div>
+
+<script>
+function sprawdzKwalifikacje() {
+  const studia = document.getElementById('studia').value;
+  const zaleglosci = document.getElementById('zaleglosci').value;
+  const miesiace = parseInt(document.getElementById('miesiace').value) || 0;
+  const jezyk = document.getElementById('jezyk').value;
+  
+  let blokady = [];
+  let wskazowki = [];
+  
+  // Warunek 1: Semestr
+  if (studia === 'lic_1') {
+    blokady.push("Wyjazd na studia na I stopniu jest możliwy najwcześniej od 2. roku (od 3. semestru).");
+  }
+  
+  // Warunek 2: Zaległości
+  if (zaleglosci === 'tak') {
+    blokady.push("Posiadanie długu punktowego/warunku formalnie uniemożliwia kwalifikację do momentu zaliczenia braków.");
+  }
+  
+  // Warunek 3: Kapitał mobilności
+  const pozostaleMiesiace = 12 - miesiace;
+  if (pozostaleMiesiace <= 0) {
+    blokady.push("Wykorzystano już maksymalny kapitał mobilności (12 miesięcy) na obecnym stopniu studiów.");
+  } else if (miesiace > 0) {
+    wskazowki.push(`Twój pozostały kapitał mobilności wynosi <strong>${pozostaleMiesiace} mies.</strong> (maksymalnie na tyle możesz jeszcze wyjechać).`);
+  }
+  
+  // Warunek 4: Język
+  if (jezyk === 'nie') {
+    wskazowki.push("Brak certyfikatu nie przekreśla wyjazdu! Możesz przystąpić do uczelnianego testu językowego organizowanego przez Centrum Językowe przed rekrutacją.");
+  }
+
+  // Budowanie komunikatu
+  const wynikDiv = document.getElementById('wynik');
+  wynikDiv.style.display = 'block';
+  
+  if (blokady.length > 0) {
+    wynikDiv.style.backgroundColor = '#fde8e8';
+    wynikDiv.style.border = '1px solid #f8b4b4';
+    wynikDiv.style.color = '#9b1c1c';
+    wynikDiv.innerHTML = `<strong>Niestety, na ten moment nie spełniasz wszystkich warunków:</strong><ul>` + 
+      blokady.map(b => `<li>${b}</li>`).join('') + `</ul>` +
+      (wskazowki.length > 0 ? `<strong>Wskazówki dodatkowe:</strong><ul>` + wskazowki.map(w => `<li>${w}</li>`).join('') + `</ul>` : '');
+  } else {
+    wynikDiv.style.backgroundColor = '#def7ec';
+    wynikDiv.style.border = '1px solid #bcf0da';
+    wynikDiv.style.color = '#03543f';
+    wynikDiv.innerHTML = `<strong>Świetnie! Spełniasz podstawowe kryteria formalne do ubiegania się o wyjazd.</strong><br><br>` +
+      `<strong>Kolejne kroki:</strong><ul>` +
+      `<li>Zapoznaj się z listą uczelni partnerskich i programem studiów (Learning Agreement).</li>` +
+      (wskazowki.length > 0 ? wskazowki.map(w => `<li>${w}</li>`).join('') : '') +
+      `<li>Złóż wniosek w systemie rekrutacyjnym w ogłoszonym terminie naboru.</li></ul>`;
+  }
+}
+</script>
