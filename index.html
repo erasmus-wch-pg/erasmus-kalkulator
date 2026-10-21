@@ -25,6 +25,8 @@
       --info-bg: #eff6ff;
       --info-border: #bfdbfe;
       --info-text: #1e40af;
+      --disclaimer-bg: #f8fafc;
+      --disclaimer-border: #cbd5e1;
       --radius: 14px;
     }
 
@@ -351,6 +353,25 @@
       word-break: break-all;
     }
 
+    /* Wyróżniony boks klauzuli informacyjnej i prywatności */
+    .disclaimer-card {
+      background: var(--disclaimer-bg);
+      border: 1px solid var(--disclaimer-border);
+      border-left: 4px solid var(--primary);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-top: 18px;
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: #334155;
+    }
+
+    .disclaimer-card strong {
+      color: var(--primary);
+      display: block;
+      margin-bottom: 3px;
+    }
+
     #email-form-sekcja {
       margin-top: 20px;
       padding-top: 16px;
@@ -452,6 +473,7 @@
     <div>
       <strong data-i18n="coordTitle">Koordynator Wydziałowy ds. Erasmus+ (WCh PG):</strong><br>
       <span data-i18n="coordEmailLabel">Adres e-mail:</span> <span id="label-email" style="font-weight: 700;">joanna.grabowska@pg.edu.pl</span><br>
+      <span style="font-size: 11.5px; color: #3b82f6;" data-i18n="coordNote">Obsługa studentów I i II stopnia (domena @student.pg.edu.pl)</span>
     </div>
   </div>
 
@@ -621,6 +643,13 @@
       </ul>
     </div>
 
+    <!-- Wyróżniony boks klauzuli informacyjnej i prywatności (tuż nad mailem) -->
+    <div class="disclaimer-card">
+      <strong data-i18n="disclaimerHeading">Informacja prawna i ochrona danych:</strong>
+      <p style="margin-bottom: 4px;" data-i18n="disclaimerText1">Wynik weryfikacji ma charakter wyłącznie informacyjny i nie stanowi oficjalnej decyzji o zakwalifikowaniu — ostateczną ocenę formalną zawsze przeprowadza Koordynator Wydziałowy.</p>
+      <p data-i18n="disclaimerText2">Narzędzie działa w 100% lokalnie w Twojej przeglądarce i nie rejestruje, nie przetwarza ani nie przechowuje żadnych danych osobowych.</p>
+    </div>
+
     <!-- Formularz wysyłki zgłoszenia do koordynatora -->
     <div id="email-form-sekcja" style="display: none;">
       <h3 style="font-size: 15px; margin-bottom: 4px; color: var(--primary);" data-i18n="formHeading">Prześlij zgłoszenie do Koordynatora Wydziałowego</h3>
@@ -658,18 +687,7 @@
   </div>
 
   <footer>
-    pl: {
-      // ...
-      footer1: "Wydział Chemiczny Politechniki Gdańskiej • Program Erasmus+"
-      footer2: "Wynik ma charakter informacyjny i wymaga potwierdzenia u Koordynatora Wydziałowego.",
-      footer3: "Narzędzie działa lokalnie w przeglądarce — formularz nie rejestruje, nie przetwarza ani nie przechowuje danych osobowych."
-    },
-    en: {
-      // ...
-      footer1: "Faculty of Chemistry, Gdańsk Tech • Program Erasmus+"
-      footer2: "This result is for informational purposes only and requires final confirmation by the Departmental Coordinator.",
-      footer3: "This tool runs entirely in your browser — it does not store, process, or record any personal data."
-    }
+    <span data-i18n="footerText">Wydział Chemiczny Politechniki Gdańskiej • Program Erasmus+</span>
   </footer>
 </div>
 
@@ -720,6 +738,9 @@
       linksTitle: "Oficjalne procedury Politechniki Gdańskiej:",
       link1: "Zanim wyjedziesz – ogólne zasady",
       link2: "Jak wyjechać – krok po kroku",
+      disclaimerHeading: "Informacja prawna i ochrona danych:",
+      disclaimerText1: "Wynik weryfikacji ma charakter wyłącznie informacyjny i nie stanowi oficjalnej decyzji o zakwalifikowaniu — ostateczną ocenę formalną zawsze przeprowadza Koordynator Wydziałowy.",
+      disclaimerText2: "Narzędzie działa w 100% lokalnie w Twojej przeglądarce i nie rejestruje, nie przetwarza ani nie przechowuje żadnych danych osobowych.",
       formHeading: "Prześlij zgłoszenie do Koordynatora Wydziałowego",
       formDesc: "Uzupełnij poniższe dane, aby wygenerować oficjalną wiadomość ze zgłoszeniem:",
       formName: "Imię i nazwisko studenta:",
@@ -729,8 +750,7 @@
       btnSubmit: "Generuj i wyślij zgłoszenie",
       btnCopy: "Skopiuj treść zgłoszenia do schowka",
       formNotice: "Pamiętaj: Do wiadomości należy załączyć skan lub zdjęcie potwierdzenia braku długu ECTS z dziekanatu!",
-      footer1: "Wydział Chemiczny Politechniki Gdańskiej • Program Erasmus+",
-      footer2: "Weryfikator nie przetwarza danych w celach komercyjnych ani nie zapisuje ich w zewnętrznych bazach."
+      footerText: "Wydział Chemiczny Politechniki Gdańskiej • Program Erasmus+"
     },
     en: {
       badge: "Gdańsk University of Technology",
@@ -769,6 +789,9 @@
       linksTitle: "Official Gdańsk Tech Erasmus+ procedures:",
       link1: "Before you leave – General rules",
       link2: "Step-by-step application guide",
+      disclaimerHeading: "Legal notice & data protection:",
+      disclaimerText1: "This self-assessment is for informational purposes only and does not constitute an official qualification decision — final eligibility is always determined by the Departmental Coordinator.",
+      disclaimerText2: "This tool runs 100% locally in your browser and does not store, process, or record any personal data.",
       formHeading: "Send your pre-application to the Departmental Coordinator",
       formDesc: "Fill in the details below to generate an official pre-application email:",
       formName: "Student's Full Name:",
@@ -778,8 +801,7 @@
       btnSubmit: "Generate and send application",
       btnCopy: "Copy application text to clipboard",
       formNotice: "Note: You must attach a scan/photo of the Dean's Office confirmation of zero ECTS debt to your email!",
-      footer1: "Faculty of Chemistry, Gdańsk University of Technology • Erasmus+ Programme",
-      footer2: "This self-assessment tool does not store or process data in external commercial databases."
+      footerText: "Faculty of Chemistry, Gdańsk University of Technology • Erasmus+ Programme"
     }
   };
 
@@ -798,7 +820,7 @@
       }
     });
 
-    // Zmiana placeholderów w formularzu
+    // Zmiana placeholderów
     if (lang === 'en') {
       document.getElementById('stud-nazwisko').placeholder = "e.g. John Smith";
       document.getElementById('stud-email').placeholder = "e.g. s123456@student.pg.edu.pl";
@@ -816,7 +838,6 @@
 
   document.getElementById('label-email').innerText = EMAIL_KOORDYNATORA;
 
-  // Funkcja sprawdzająca aktualną datę i nabór na WCh PG
   function sprawdzTerminRekrutacji() {
     const dzis = new Date();
     const rok = dzis.getFullYear();
@@ -1049,7 +1070,7 @@
         </div>`;
       }
 
-      // 2. Wymagane informacje do przekazania
+      // 2. Wymagane informacje
       const okresTekst = (okres === '2_semestry') 
         ? (isEn ? '2 semesters (full academic year)' : '2 semestry (rok akademicki)')
         : (isEn ? '1 semester' : '1 semestr');
@@ -1070,7 +1091,6 @@
     }
   }
 
-  // Generowanie treści maila
   function generujTrescZgloszenia() {
     const nazwisko = document.getElementById('stud-nazwisko').value.trim();
     const email = document.getElementById('stud-email').value.trim();
