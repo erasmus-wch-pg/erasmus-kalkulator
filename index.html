@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Kalkulator Kwalifikowalności Erasmus+</title>
+  <title>Kwalifikacja Erasmus+ | Wydział Chemiczny PG</title>
   <style>
     :root {
       --primary: #003366;
-      --primary-hover: #002244;
+      --primary-light: #e6f0fa;
       --bg: #f8fafc;
       --card-bg: #ffffff;
       --text-main: #0f172a;
@@ -19,9 +19,9 @@
       --danger-bg: #fef2f2;
       --danger-border: #fecaca;
       --danger-text: #991b1b;
-      --info-bg: #f0fdfa;
-      --info-border: #ccfbf1;
-      --info-text: #115e59;
+      --warning-bg: #fffbeb;
+      --warning-border: #fde68a;
+      --warning-text: #92400e;
       --radius: 14px;
     }
 
@@ -37,20 +37,20 @@
       background-color: var(--bg);
       color: var(--text-main);
       line-height: 1.5;
-      padding: 16px 12px 40px;
+      padding: 16px 12px 60px;
       display: flex;
       justify-content: center;
     }
 
     .container {
       width: 100%;
-      max-width: 520px;
+      max-width: 580px;
     }
 
     header {
       text-align: center;
-      margin-bottom: 24px;
-      padding: 12px 4px;
+      margin-bottom: 20px;
+      padding: 10px 4px;
     }
 
     .badge {
@@ -59,41 +59,63 @@
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      background: #e0e7ff;
-      color: #3730a3;
-      padding: 4px 10px;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 5px 12px;
       border-radius: 20px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     h1 {
-      font-size: 22px;
+      font-size: 21px;
       font-weight: 800;
       color: var(--primary);
-      line-height: 1.25;
+      line-height: 1.3;
       margin-bottom: 6px;
     }
 
     p.subtitle {
-      font-size: 13px;
+      font-size: 13.5px;
       color: var(--text-muted);
     }
 
+    /* Kontakt z koordynatorem */
+    .contact-card {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #1e40af;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .contact-card svg {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      fill: #1e40af;
+    }
+
+    /* Karty pytań */
     .card {
       background: var(--card-bg);
       border-radius: var(--radius);
       padding: 18px 16px;
       margin-bottom: 16px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
       border: 1px solid var(--border);
     }
 
     .card-title {
-      font-size: 14px;
+      font-size: 14.5px;
       font-weight: 700;
       margin-bottom: 12px;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 8px;
     }
 
@@ -101,16 +123,24 @@
       background: var(--primary);
       color: #fff;
       font-size: 11px;
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      margin-top: 1px;
     }
 
-    /* Kafelki do klikania palcem (Touch Targets) */
+    .hint-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: -6px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
     .tiles-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -141,14 +171,14 @@
       background: #fff;
       border: 2px solid var(--border);
       border-radius: 10px;
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 500;
       transition: all 0.15s ease;
     }
 
     .tile-label input:checked + .tile-content {
       border-color: var(--primary);
-      background-color: #f0f7ff;
+      background-color: var(--primary-light);
       color: var(--primary);
       font-weight: 600;
     }
@@ -158,9 +188,19 @@
       font-size: 14px;
       font-weight: 800;
       color: var(--primary);
+      margin-left: 8px;
     }
 
-    /* Licznik dotykowy (Stepper) */
+    /* Dynamiczny boks informacyjny pod pytaniem 1 */
+    #info-umowa {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      display: none;
+    }
+
+    /* Stepper dotykowy (Miesiące) */
     .stepper {
       display: flex;
       align-items: center;
@@ -171,20 +211,18 @@
     }
 
     .stepper-btn {
-      width: 46px;
-      height: 46px;
+      width: 48px;
+      height: 48px;
       background: #fff;
       border: 1px solid var(--border);
       border-radius: 8px;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
       color: var(--primary);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-      transition: background 0.1s;
     }
 
     .stepper-btn:active {
@@ -200,16 +238,14 @@
       font-size: 20px;
       font-weight: 800;
       color: var(--primary);
-      line-height: 1;
     }
 
     .stepper-value small {
       font-size: 11px;
       color: var(--text-muted);
-      font-weight: 500;
     }
 
-    /* Panel wyników */
+    /* Wyniki */
     #wynik-sekcja {
       margin-top: 24px;
       border-radius: var(--radius);
@@ -219,7 +255,7 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
+      from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -247,24 +283,88 @@
     .wynik-lista {
       margin-left: 20px;
       font-size: 13.5px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .wynik-lista li {
-      margin-bottom: 6px;
+      margin-bottom: 7px;
     }
 
-    .wskazowki-box {
+    .info-box {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 14px;
       margin-top: 14px;
-      padding-top: 14px;
-      border-top: 1px dashed rgba(0,0,0,0.12);
+      border: 1px solid var(--border);
+      color: var(--text-main);
     }
 
-    .wskazowki-box h4 {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+    .info-box h4 {
+      font-size: 13.5px;
       margin-bottom: 8px;
+      color: var(--primary);
+    }
+
+    .links-box {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(0,0,0,0.15);
+      font-size: 13px;
+    }
+
+    .links-box a, .info-box a {
+      color: var(--primary);
+      font-weight: 600;
+      word-break: break-all;
+    }
+
+    /* Formularz wysyłki zgłoszenia do koordynatora */
+    #email-form-sekcja {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text-main);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 13.5px;
+      background: #fff;
+    }
+
+    .btn-send {
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .btn-send:active {
+      background: #002244;
     }
 
     footer {
@@ -272,7 +372,6 @@
       margin-top: 30px;
       font-size: 12px;
       color: var(--text-muted);
-      line-height: 1.4;
     }
   </style>
 </head>
@@ -280,29 +379,102 @@
 
 <div class="container">
   <header>
-    <div class="badge">Program Erasmus+</div>
-    <h1>Weryfikacja wyjazdowa</h1>
-    <p class="subtitle">Sprawdź natychmiast swoją gotowość do rekrutacji</p>
+    <div class="badge">Politechnika Gdańska</div>
+    <h1>Kwalifikacja Erasmus+</h1>
+    <p class="subtitle">Wydział Chemiczny • Autodiagnoza formalna kandydata</p>
   </header>
 
-  <!-- Pytanie 1: Etap -->
+  <!-- Karta kontaktu z koordynatorem -->
+  <div class="contact-card">
+    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    <div>
+      <strong>Koordynator Wydziałowy ds. Erasmus+ (WCh PG):</strong><br>
+      Adres e-mail: <a href="mailto:joanna.grabowska@pg.edu.pl" style="color: inherit; font-weight: 600;">joanna.grabowska@pg.edu.pl</a><br>
+      <span style="font-size: 11.5px; color: #3b82f6;">Dyżury stacjonarne wg harmonogramu na stronie wydziału</span>
+    </div>
+  </div>
+
+  <!-- Pytanie 1: Umowa bilateralna -->
   <div class="card">
     <div class="card-title">
       <span class="step-num">1</span>
+      <span>Czy uczelnia partnerska ma podpisaną umowę z WCh PG?</span>
+    </div>
+    <div class="tiles-grid">
+      <label class="tile-label">
+        <input type="radio" name="umowa" value="tak" checked onchange="obliczWynik()">
+        <div class="tile-content">Tak, znajduje się na liście umów WCh</div>
+      </label>
+      <label class="tile-label">
+        <input type="radio" name="umowa" value="nie" onchange="obliczWynik()">
+        <div class="tile-content">Nie ma podpisanej umowy z WCh</div>
+      </label>
+      <label class="tile-label">
+        <input type="radio" name="umowa" value="nie_wiem" onchange="obliczWynik()">
+        <div class="tile-content">Nie wiem / chcę sprawdzić listę</div>
+      </label>
+      <label class="tile-label">
+        <input type="radio" name="umowa" value="nie_wybralem" onchange="obliczWynik()">
+        <div class="tile-content">Jeszcze nie wybrałem/-am uczelni</div>
+      </label>
+    </div>
+    <div id="info-umowa"></div>
+  </div>
+
+  <!-- Pytanie 2: Termin planowanego wyjazdu -->
+  <div class="card">
+    <div class="card-title">
+      <span class="step-num">2</span>
+      <span>Kiedy planujesz rozpocząć wyjazd?</span>
+    </div>
+    <div class="tiles-grid tiles-grid-2">
+      <label class="tile-label">
+        <input type="radio" name="kiedy" value="najblizszy" checked onchange="obliczWynik()">
+        <div class="tile-content">W nadchodzącym semestrze</div>
+      </label>
+      <label class="tile-label">
+        <input type="radio" name="kiedy" value="przyszlosc" onchange="obliczWynik()">
+        <div class="tile-content">W dalszej przyszłości</div>
+      </label>
+    </div>
+  </div>
+
+  <!-- Pytanie 3: Na ile semestrów -->
+  <div class="card">
+    <div class="card-title">
+      <span class="step-num">3</span>
+      <span>Na jaki okres planujesz wyjazd?</span>
+    </div>
+    <div class="tiles-grid tiles-grid-2">
+      <label class="tile-label">
+        <input type="radio" name="okres" value="1_semestr" checked onchange="obliczWynik()">
+        <div class="tile-content">1 semestr (ok. 5 mies.)</div>
+      </label>
+      <label class="tile-label">
+        <input type="radio" name="okres" value="2_semestry" onchange="obliczWynik()">
+        <div class="tile-content">Cały rok akademicki (2 sem.)</div>
+      </label>
+    </div>
+  </div>
+
+  <!-- Pytanie 4: Etap studiów -->
+  <div class="card">
+    <div class="card-title">
+      <span class="step-num">4</span>
       <span>Aktualny etap i semestr studiów:</span>
     </div>
     <div class="tiles-grid">
       <label class="tile-label">
         <input type="radio" name="etap" value="lic_1" onchange="obliczWynik()">
-        <div class="tile-content">I stopień: semestr 1 lub 2</div>
+        <div class="tile-content">I stopień (inż.): 1. lub 2. semestr</div>
       </label>
       <label class="tile-label">
         <input type="radio" name="etap" value="lic_wyzej" checked onchange="obliczWynik()">
-        <div class="tile-content">I stopień: semestr 3 lub wyższy</div>
+        <div class="tile-content">I stopień (inż.): 3. semestr lub wyższy</div>
       </label>
       <label class="tile-label">
         <input type="radio" name="etap" value="mgr" onchange="obliczWynik()">
-        <div class="tile-content">II stopień (magisterskie)</div>
+        <div class="tile-content">II stopień (studia magisterskie)</div>
       </label>
       <label class="tile-label">
         <input type="radio" name="etap" value="dokt" onchange="obliczWynik()">
@@ -311,11 +483,11 @@
     </div>
   </div>
 
-  <!-- Pytanie 2: Zaległości -->
+  <!-- Pytanie 5: Zaległości / Dług ECTS -->
   <div class="card">
     <div class="card-title">
-      <span class="step-num">2</span>
-      <span>Czy masz niezaliczony przedmiot / dług ECTS?</span>
+      <span class="step-num">5</span>
+      <span>Czy masz niezaliczony przedmiot / dług punktowy ECTS?</span>
     </div>
     <div class="tiles-grid tiles-grid-2">
       <label class="tile-label">
@@ -324,58 +496,107 @@
       </label>
       <label class="tile-label">
         <input type="radio" name="zaleglosci" value="tak" onchange="obliczWynik()">
-        <div class="tile-content">Tak (mam warunek)</div>
+        <div class="tile-content">Tak (posiadam zaległość)</div>
       </label>
     </div>
   </div>
 
-  <!-- Pytanie 3: Kapitał mobilności (Stepper dotykowy) -->
+  <!-- Pytanie 6: Kapitał mobilności -->
   <div class="card">
     <div class="card-title">
-      <span class="step-num">3</span>
-      <span>Wykorzystany kapitał Erasmusa (ten stopień):</span>
+      <span class="step-num">6</span>
+      <span>Wcześniejsze wyjazdy Erasmus+ na OBECNYM stopniu studiów:</span>
     </div>
+    <span class="hint-text">Maksymalny łączny kapitał mobilności to 12 miesięcy na danym stopniu studiów.</span>
     <div class="stepper">
       <button type="button" class="stepper-btn" onclick="zmienMiesiace(-1)">−</button>
       <div class="stepper-value">
         <span id="liczba-miesiecy">0</span>
-        <small>miesięcy</small>
+        <small>miesięcy wykorzystanych</small>
       </div>
       <button type="button" class="stepper-btn" onclick="zmienMiesiace(1)">+</button>
     </div>
   </div>
 
-  <!-- Pytanie 4: Język -->
+  <!-- Pytanie 7: Wymogi językowe -->
   <div class="card">
     <div class="card-title">
-      <span class="step-num">4</span>
-      <span>Certyfikat językowy zgodny z ofertą uczelni:</span>
+      <span class="step-num">7</span>
+      <span>Certyfikat językowy (język wykładowy uczelni przyjmującej):</span>
     </div>
     <div class="tiles-grid">
       <label class="tile-label">
-        <input type="radio" name="jezyk" value="tak" onchange="obliczWynik()">
-        <div class="tile-content">Posiadam wymagany certyfikat</div>
+        <input type="radio" name="jezyk" value="posiadam" checked onchange="obliczWynik()">
+        <div class="tile-content">Posiadam wymagany certyfikat językowy</div>
       </label>
       <label class="tile-label">
-        <input type="radio" name="jezyk" value="nie" checked onchange="obliczWynik()">
-        <div class="tile-content">Nie posiadam oficjalnego certyfikatu</div>
+        <input type="radio" name="jezyk" value="nie_nie_wymaga" onchange="obliczWynik()">
+        <div class="tile-content">Nie posiadam, a uczelnia przyjmująca go NIE wymaga</div>
+      </label>
+      <label class="tile-label">
+        <input type="radio" name="jezyk" value="nie_wymaga" onchange="obliczWynik()">
+        <div class="tile-content">Nie posiadam, a uczelnia przyjmująca go WYMAGA</div>
+      </label>
+      <label class="tile-label">
+        <input type="radio" name="jezyk" value="nie_nie_wiem" onchange="obliczWynik()">
+        <div class="tile-content">Nie posiadam i nie wiem, czy jest wymagany</div>
       </label>
     </div>
   </div>
 
-  <!-- Sekcja wyników -->
+  <!-- Panel podsumowania i wyników -->
   <div id="wynik-sekcja">
     <div id="wynik-status" class="wynik-status"></div>
     <div id="wynik-tresc"></div>
+
+    <!-- Przydatne linki -->
+    <div class="links-box">
+      <strong>Oficjalne zasady i procedury PG:</strong>
+      <ul style="margin-left: 18px; margin-top: 6px;">
+        <li><a href="https://pg.edu.pl/inter-hub/erasmus/erasmus-mobilnosc-studentow/erasmus-studia-za-granica/zanim-wyjedziesz-ogolne-zasady" target="_blank" rel="noopener">Zanim wyjedziesz – ogólne zasady</a></li>
+        <li><a href="https://pg.edu.pl/inter-hub/erasmus/erasmus-mobilnosc-studentow/erasmus-studia-za-granica/jak-wyjechac-krok-po-kroku" target="_blank" rel="noopener">Jak wyjechać – krok po kroku</a></li>
+      </ul>
+    </div>
+
+    <!-- Formularz wysyłki maila do koordynatora (wyłącznie gdy student się kwalifikuje) -->
+    <div id="email-form-sekcja" style="display: none;">
+      <h3 style="font-size: 15px; margin-bottom: 6px; color: var(--primary);">Prześlij zgłoszenie do Koordynatora Wydziałowego</h3>
+      <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 12px;">Uzupełnij poniższe pola, aby wygenerować oficjalną wiadomość e-mail z podsumowaniem Twoich odpowiedzi:</p>
+      
+      <div class="form-group">
+        <label>Imię i nazwisko studenta:</label>
+        <input type="text" id="stud-nazwisko" class="form-control" placeholder="np. Jan Kowalski">
+      </div>
+      <div class="form-group">
+        <label>Twój adres e-mail (w domenie @student.pg.edu.pl):</label>
+        <input type="email" id="stud-email" class="form-control" placeholder="np. s123456@student.pg.edu.pl">
+      </div>
+      <div class="form-group">
+        <label>Kierunek i aktualny semestr studiów:</label>
+        <input type="text" id="stud-kierunek" class="form-control" placeholder="np. Chemia, semestr 4 (I stopień)">
+      </div>
+      <div class="form-group">
+        <label>Wybrana uczelnia zagraniczna (nazwa i kraj):</label>
+        <input type="text" id="stud-uczelnia" class="form-control" placeholder="np. Universitat de València (Hiszpania)">
+      </div>
+
+      <button type="button" class="btn-send" onclick="wyslijEmailDoKoordynatora()">
+        <svg style="width:18px;height:18px;fill:currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        Generuj e-mail do Koordynatora
+      </button>
+      <p style="font-size: 11px; color: var(--text-muted); margin-top: 6px; text-align: center;">Przycisk otworzy Twój domyślny program pocztowy z gotową treścią. Pamiętaj o dołączeniu zaświadczenia z dziekanatu!</p>
+    </div>
   </div>
 
   <footer>
-    Weryfikator ma charakter informacyjny i nie zastępuje oficjalnej decyzji Komisji Rekrutacyjnej. Żadne dane nie są rejestrowane.
+    Wydział Chemiczny Politechniki Gdańskiej • Program Erasmus+<br>
+    Weryfikator nie przetwarza ani nie magazynuje danych osobowych w bazie zewnętrznej.
   </footer>
 </div>
 
 <script>
   let wykorzystaneMiesiace = 0;
+  const EMAIL_KOORDYNATORA = "joanna,grabowska@pg.edu.pl"; // <-- TUTAJ WPISZ SWÓJ ADRES EMAIL
 
   function zmienMiesiace(delta) {
     wykorzystaneMiesiace = Math.max(0, Math.min(12, wykorzystaneMiesiace + delta));
@@ -384,71 +605,184 @@
   }
 
   function obliczWynik() {
+    const umowa = document.querySelector('input[name="umowa"]:checked').value;
+    const kiedy = document.querySelector('input[name="kiedy"]:checked').value;
+    const okres = document.querySelector('input[name="okres"]:checked').value;
     const etap = document.querySelector('input[name="etap"]:checked').value;
     const zaleglosci = document.querySelector('input[name="zaleglosci"]:checked').value;
     const jezyk = document.querySelector('input[name="jezyk"]:checked').value;
     
+    // Obsługa boksu pod pytaniem 1
+    const infoUmowa = document.getElementById('info-umowa');
+    if (umowa === 'nie_wiem') {
+      infoUmowa.style.display = 'block';
+      infoUmowa.style.background = '#eff6ff';
+      infoUmowa.style.border = '1px solid #bfdbfe';
+      infoUmowa.style.color = '#1e40af';
+      infoUmowa.innerHTML = `Sprawdź wykaz uczelni: <a href="https://cdn.files.pg.edu.pl/main/DMWA/Erasmus%2B/og%C3%B3lne_umowy%20i%20inne/Lista%20um%C3%B3w%20Erasmus%2B%20Politechnika%20Gda%C5%84ska.pdf" target="_blank" rel="noopener" style="font-weight:700; text-decoration:underline;">Pobierz aktualną listę umów bilateralnych PG (PDF)</a>.`;
+    } else if (umowa === 'nie') {
+      infoUmowa.style.display = 'block';
+      infoUmowa.style.background = '#fef2f2';
+      infoUmowa.style.border = '1px solid #fecaca';
+      infoUmowa.style.color = '#991b1b';
+      infoUmowa.innerHTML = `<strong>Ważne:</strong> Skontaktuj się z koordynatorem wydziałowym, aby ustalić możliwość podpisania nowej umowy. Proces ten trwa wiele miesięcy, dlatego wyjazd w najbliższym semestrze nie będzie możliwy.`;
+    } else if (umowa === 'nie_wybralem') {
+      infoUmowa.style.display = 'block';
+      infoUmowa.style.background = '#fffbeb';
+      infoUmowa.style.border = '1px solid #fde68a';
+      infoUmowa.style.color = '#92400e';
+      infoUmowa.innerHTML = `Aby sprawdzić kwalifikowalność i wymogi, zacznij od wyboru konkretnej uczelni partnerskiej z oferty wydziału.`;
+    } else {
+      infoUmowa.style.display = 'none';
+    }
+
     let blokady = [];
-    let wskazowki = [];
+    let terminyWskazowki = [];
+    let jezykWskazowki = [];
+    let formalneWymogi = [];
 
-    // Reguła 1: Semestr
+    // 1. Umowa
+    if (umowa === 'nie') {
+      blokady.push("Brak podpisanej umowy bilateralnej z wybraną uczelnią. Procedura podpisania nowej umowy trwa wiele miesięcy i wyklucza wyjazd w najbliższym semestrze.");
+    } else if (umowa === 'nie_wybralem') {
+      blokady.push("Nie wybrano jeszcze uczelni docelowej. Wybór jednostki partnerskiej jest warunkiem koniecznym do oceny możliwości wyjazdu i dopasowania programu studiów.");
+    }
+
+    // 2. Semestr i etap
     if (etap === 'lic_1') {
-      blokady.push("Wyjazd na I stopniu jest formalnie możliwy najwcześniej od 2. roku studiów (od 3. semestru).");
+      blokady.push("Wyjazd na I stopniu studiów jest możliwy najwcześniej od 2. roku (od 3. semestru).");
     }
 
-    // Reguła 2: Dług ECTS
+    // 3. Dług punktowy
     if (zaleglosci === 'tak') {
-      blokady.push("Dług kredytowy ECTS lub niezaliczony kurs wyklucza z rekrutacji do momentu uzyskania wpisu na czysto.");
+      blokady.push("Posiadanie długu punktowego ECTS lub niezaliczonych przedmiotów formalnie wyklucza z kwalifikacji do momentu uregulowania zaległości.");
+    } else {
+      formalneWymogi.push("<strong>Brak długu ECTS:</strong> Musisz dostarczyć do koordynatora wydziałowego oficjalne zaświadczenie z dziekanatu WCh potwierdzające brak zaległości punktowych.");
     }
 
-    // Reguła 3: Miesiące (max 12 na stopień)
+    // 4. Kapitał mobilności
+    const planowaneMiesiace = (okres === '2_semestry') ? 10 : 5;
     const pozostalyKapital = 12 - wykorzystaneMiesiace;
+    
     if (pozostalyKapital <= 0) {
-      blokady.push("Wykorzystano pełen limit mobilności (12 miesięcy) przewidziany dla Twojego obecnego stopnia studiów.");
-    } else if (wykorzystaneMiesiace > 0) {
-      wskazowki.push(`Twój pozostały kapitał wynosi <strong>${pozostalyKapital} mies.</strong> (maksymalnie na tyle możesz wyjechać).`);
+      blokady.push("Wykorzystano pełen kapitał mobilności (12 miesięcy) dla obecnego stopnia studiów.");
+    } else if (planowaneMiesiace > pozostalyKapital) {
+      blokady.push(`Planowany wyjazd (${planowaneMiesiace} mies.) przekracza Twój pozostały kapitał mobilności (${pozostalyKapital} mies.). Możesz wyjechać maksymalnie na ${pozostalyKapital} miesięcy.`);
     }
 
-    // Reguła 4: Certyfikat
-    if (jezyk === 'nie') {
-      wskazowki.push("Brak certyfikatu nie zamyka drogi! Możesz przystąpić do uczelnianego testu kwalifikacyjnego w Centrum Językowym przed zamknięciem naboru.");
+    // 5. Terminy (Pytanie o termin wyjazdu)
+    if (kiedy === 'najblizszy') {
+      terminyWskazowki.push("<strong>Terminy kwalifikacji na WCh PG:</strong> do <strong>15 listopada</strong> (wyjazdy na semestr letni) oraz do <strong>15 maja</strong> (wyjazdy na semestr zimowy).");
+      terminyWskazowki.push("<strong>Uwaga na terminy uczelni zagranicznej:</strong> Uczelnie partnerskie ustalają własne, często wcześniejsze terminy nominacji. Sprawdź niezwłocznie stronę uczelni przyjmującej, czy termin naboru nie upłynął!");
     }
 
-    // Renderowanie widoku
+    // 6. Język
+    if (jezyk === 'nie_nie_wymaga') {
+      jezykWskazowki.push("Uczelnia zagraniczna nie wymaga certyfikatu, ale przed kwalifikacją <strong>musisz odbyć krótką rozmowę z koordynatorem wydziałowym w języku wykładowym uczelni</strong> w celu potwierdzenia znajomości języka.");
+    } else if (jezyk === 'nie_wymaga') {
+      jezykWskazowki.push("Uczelnia wymaga certyfikatu. Istnieje możliwość uzyskania certyfikatu w Centrum Języków Obcych PG, pamiętaj jednak, że <strong>nie wszystkie uczelnie zagraniczne honorują egzaminy wewnętrzne</strong> (część wymaga certyfikatów międzynarodowych, np. TOEFL, IELTS).");
+    } else if (jezyk === 'nie_nie_wiem') {
+      jezykWskazowki.push("Musisz jak najszybciej ustalić wymogi językowe na stronie wybranej uczelni zagranicznej lub kontaktując się bezpośrednio z koordynatorem Erasmus w uczelni przyjmującej.");
+    }
+
+    // Prezentacja widoku
     const sekcja = document.getElementById('wynik-sekcja');
     const statusDiv = document.getElementById('wynik-status');
     const trescDiv = document.getElementById('wynik-tresc');
+    const emailSekcja = document.getElementById('email-form-sekcja');
     
     sekcja.style.display = 'block';
 
     if (blokady.length > 0) {
       sekcja.className = 'wynik-negatywny';
-      statusDiv.innerHTML = `<span>✕</span> Wymagane działania formalne`;
+      statusDiv.innerHTML = `<span>✕</span> Wymagane działania naprawcze`;
+      emailSekcja.style.display = 'none';
       
-      let html = `<p style="margin-bottom:8px; font-weight:600;">Kwestie uniemożliwiające kwalifikację w tym momencie:</p><ul class="wynik-lista">`;
+      let html = `<p style="margin-bottom:8px; font-weight:700;">W tej chwili nie spełniasz wszystkich warunków kwalifikacji:</p><ul class="wynik-lista">`;
       blokady.forEach(b => html += `<li>${b}</li>`);
       html += `</ul>`;
 
-      if (wskazowki.length > 0) {
-        html += `<div class="wskazowki-box"><h4>Dodatkowe uwagi:</h4><ul class="wynik-lista">`;
-        wskazowki.forEach(w => html += `<li>${w}</li>`);
+      if (terminyWskazowki.length > 0 || jezykWskazowki.length > 0) {
+        html += `<div class="info-box"><h4>Wskazówki dodatkowe:</h4><ul class="wynik-lista" style="margin-bottom:0;">`;
+        terminyWskazowki.forEach(t => html += `<li>${t}</li>`);
+        jezykWskazowki.forEach(j => html += `<li>${j}</li>`);
         html += `</ul></div>`;
       }
       trescDiv.innerHTML = html;
     } else {
       sekcja.className = 'wynik-pozytywny';
-      statusDiv.innerHTML = `<span>✓</span> Spełniasz kryteria formalne!`;
+      statusDiv.innerHTML = `<span>✓</span> Wstępna kwalifikacja pozytywna!`;
+      emailSekcja.style.display = 'block';
       
-      let html = `<p style="margin-bottom:8px; font-weight:600;">Rekomendowane kolejne kroki:</p><ul class="wynik-lista">`;
-      html += `<li>Zapoznaj się z listą uczelni partnerskich i programem studiów (Learning Agreement).</li>`;
-      wskazowki.forEach(w => html += `<li>${w}</li>`);
-      html += `<li>Złóż wniosek w systemie rekrutacyjnym w ogłoszonym terminie naboru.</li>`;
-      html += `</ul>`;
+      let html = `<p style="margin-bottom:10px; font-weight:600;">Spełniasz podstawowe kryteria formalne do ubiegania się o wyjazd na WCh PG.</p>`;
+      
+      // Spójna lista dla koordynatora
+      html += `<div class="info-box">
+        <h4>Komplet informacji do przekazania Koordynatorowi Wydziałowemu:</h4>
+        <ul class="wynik-lista" style="margin-bottom:0;">
+          <li><strong>Aktualny etap:</strong> semestr i kierunek studiów na WCh PG.</li>
+          <li>${formalneWymogi[0]}</li>
+          <li><strong>Uczelnia partnerska:</strong> pełna nazwa wybranej jednostki.</li>
+          <li><strong>Planowany okres pobytu:</strong> ${okres === '2_semestry' ? '2 semestry (rok akademicki)' : '1 semestr'}.</li>
+          <li><strong>Wymogi językowe:</strong> informacja o certyfikacie lub konieczności odbycia rozmowy językowej.</li>
+          <li><strong>Kapitał mobilności:</strong> deklaracja o wcześniejszych wyjazdach (dotychczas wykorzystano: ${wykorzystaneMiesiace} mies., pozostało: ${pozostalyKapital} mies.).</li>
+        </ul>
+      </div>`;
+
+      if (terminyWskazowki.length > 0 || jezykWskazowki.length > 0) {
+        html += `<div class="info-box" style="margin-top:10px;"><h4>Ważne wytyczne rekrutacyjne:</h4><ul class="wynik-lista" style="margin-bottom:0;">`;
+        terminyWskazowki.forEach(t => html += `<li>${t}</li>`);
+        jezykWskazowki.forEach(j => html += `<li>${j}</li>`);
+        html += `</ul></div>`;
+      }
+
       trescDiv.innerHTML = html;
     }
   }
 
-  // Automatyczny pierwszy rozruch kalkulatora
+  // Funkcja generująca oficjalnego maila do koordynatora
+  function wyslijEmailDoKoordynatora() {
+    const nazwisko = document.getElementById('stud-nazwisko').value.trim();
+    const email = document.getElementById('stud-email').value.trim();
+    const kierunek = document.getElementById('stud-kierunek').value.trim();
+    const uczelnia = document.getElementById('stud-uczelnia').value.trim();
+    
+    if (!nazwisko || !email || !kierunek || !uczelnia) {
+      alert("Proszę uzupełnić wszystkie pola formularza (imię i nazwisko, e-mail, kierunek oraz uczelnię).");
+      return;
+    }
+
+    const okres = document.querySelector('input[name="okres"]:checked').value === '2_semestry' ? '2 semestry (cały rok akademicki)' : '1 semestr';
+    const jezykRadio = document.querySelector('input[name="jezyk"]:checked').value;
+    let jezykOpis = "";
+    if (jezykRadio === 'posiadam') jezykOpis = "Posiadam wymagany certyfikat językowy";
+    if (jezykRadio === 'nie_nie_wymaga') jezykOpis = "Brak certyfikatu - uczelnia nie wymaga (gotowość do rozmowy weryfikacyjnej z Koordynatorem)";
+    if (jezykRadio === 'nie_wymaga') jezykOpis = "Brak certyfikatu - uczelnia wymaga (planowane przystąpienie do egzaminu CJO PG / zewnętrznego)";
+    if (jezykRadio === 'nie_nie_wiem') jezykOpis = "Status weryfikacji wymogów językowych w toku";
+
+    const subject = encodeURIComponent(`Zgłoszenie rekrutacyjne Erasmus+ WCh PG - ${nazwisko}`);
+    const body = encodeURIComponent(
+      `Dzień dobry,\n\n` +
+      `Zwracam się z prośbą o wstępną weryfikację mojej kandydatury na wyjazd w ramach programu Erasmus+ na Wydziale Chemicznym PG.\n\n` +
+      `DANE KANDYDATA:\n` +
+      `- Imię i nazwisko: ${nazwisko}\n` +
+      `- E-mail studenta: ${email}\n` +
+      `- Kierunek i aktualny semestr studiów: ${kierunek}\n\n` +
+      `PLANOWANY WYJAZD:\n` +
+      `- Uczelnia partnerska: ${uczelnia}\n` +
+      `- Planowany czas trwania: ${okres}\n` +
+      `- Wcześniejsze wyjazdy Erasmus (obecny stopień): ${wykorzystaneMiesiace} miesięcy (pozostały kapitał: ${12 - wykorzystaneMiesiace} mies.)\n` +
+      `- Status certyfikatu językowego: ${jezykOpis}\n\n` +
+      `OŚWIADCZENIE O BRAKU ZALEGŁOŚCI:\n` +
+      `Oświadczam, że nie posiadam zaległości punktowych ECTS. W załączeniu przesyłam skan zaświadczenia potwierdzającego brak długu punktowego uzyskanego w dziekanacie WCh PG.\n\n` +
+      `Z poważaniem,\n` +
+      `${nazwisko}`
+    );
+
+    window.location.href = `mailto:${EMAIL_KOORDYNATORA}?subject=${subject}&body=${body}`;
+  }
+
+  // Pierwsze przeliczenie po załadowaniu
   document.addEventListener('DOMContentLoaded', obliczWynik);
 </script>
 
