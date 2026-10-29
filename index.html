@@ -379,7 +379,7 @@
     }
 
     .form-group {
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .form-group label {
@@ -464,7 +464,7 @@
   <header>
     <div class="badge" data-i18n="badge">Politechnika Gdańska</div>
     <h1 data-i18n="title">Kwalifikacja Erasmus+</h1>
-    <p class="subtitle" data-i18n="subtitle">Wydział Chemiczny • Weryfikacja formalna kandydata</p>
+    <p class="subtitle" data-i18n="subtitle">Wydział Chemiczny • Autodiagnoza formalna kandydata</p>
   </header>
 
   <!-- Wizytówka koordynatora -->
@@ -472,7 +472,8 @@
     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
     <div>
       <strong data-i18n="coordTitle">Koordynator Wydziałowy ds. Erasmus+ (WCh PG):</strong><br>
-      <span data-i18n="coordEmailLabel">Adres e-mail:</span> <span id="label-email" style="font-weight: 700;">joanna.grabowska@pg.edu.pl</span><br>
+      <span data-i18n="coordEmailLabel">Adres e-mail:</span> <span id="label-email" style="font-weight: 700;">TWOJ_ADRES_EMAIL@pg.edu.pl</span><br>
+      <span style="font-size: 11.5px; color: #3b82f6;" data-i18n="coordNote">Obsługa studentów I i II stopnia (domena @student.pg.edu.pl)</span>
     </div>
   </div>
 
@@ -642,11 +643,11 @@
       </ul>
     </div>
 
-    <!-- Wyróżniony boks klauzuli informacyjnej i prywatności (tuż nad mailem) -->
+    <!-- Wyróżniony boks klauzuli informacyjnej i prywatności -->
     <div class="disclaimer-card">
       <strong data-i18n="disclaimerHeading">Informacja prawna i ochrona danych:</strong>
       <p style="margin-bottom: 4px;" data-i18n="disclaimerText1">Wynik weryfikacji ma charakter wyłącznie informacyjny i nie stanowi oficjalnej decyzji o zakwalifikowaniu — ostateczną ocenę formalną zawsze przeprowadza Koordynator Wydziałowy.</p>
-      <p data-i18n="disclaimerText2">Narzędzie działa lokalnie w Twojej przeglądarce i nie rejestruje, nie przetwarza ani nie przechowuje żadnych danych osobowych.</p>
+      <p data-i18n="disclaimerText2">Narzędzie działa w 100% lokalnie w Twojej przeglądarce i nie rejestruje, nie przetwarza ani nie przechowuje żadnych danych osobowych.</p>
     </div>
 
     <!-- Formularz wysyłki zgłoszenia do koordynatora -->
@@ -671,6 +672,25 @@
         <input type="text" id="stud-uczelnia" class="form-control" placeholder="np. Universitat de València (Hiszpania)">
       </div>
 
+      <!-- Wybór dotyczący dołączenia zaświadczenia z dziekanatu -->
+      <div class="form-group">
+        <label data-i18n="formAttachmentLabel">Zaświadczenie z dziekanatu o braku długu ECTS:</label>
+        <div class="tiles-grid">
+          <label class="tile-label">
+            <input type="radio" name="zalacznik_tryb" value="teraz" checked>
+            <div class="tile-content" data-i18n="formAttachmentNow" style="min-height: 44px; font-size: 13px;">
+              Dołączę zaświadczenie od razu jako załącznik do tego maila
+            </div>
+          </label>
+          <label class="tile-label">
+            <input type="radio" name="zalacznik_tryb" value="pozniej">
+            <div class="tile-content" data-i18n="formAttachmentLater" style="min-height: 44px; font-size: 13px;">
+              Prześlę / dostarczę zaświadczenie w późniejszym terminie
+            </div>
+          </label>
+        </div>
+      </div>
+
       <button type="button" id="btn-submit" class="btn-send" onclick="wyslijFormularzAutomatycznie()">
         <svg style="width:18px;height:18px;fill:currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
         <span data-i18n="btnSubmit">Generuj i wyślij zgłoszenie</span>
@@ -681,7 +701,7 @@
       </button>
 
       <div id="send-status-msg"></div>
-      <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px; text-align: center;" data-i18n="formNotice">Pamiętaj: Do wiadomości należy załączyć skan lub zdjęcie potwierdzenia braku długu ECTS z dziekanatu!</p>
+      <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px; text-align: center;" data-i18n="formNotice">Pamiętaj: Warunkiem koniecznym do zakwalifikowania jest dostarczenie potwierdzenia braku długu punktowego!</p>
     </div>
   </div>
 
@@ -692,7 +712,7 @@
 
 <script>
   // ================= KONFIGURACJA =================
-  const EMAIL_KOORDYNATORA = "joanna.grabowska@pg.edu.pl"; // <-- TUTAJ WPISZ SWÓJ ADRES E-MAIL
+  const EMAIL_KOORDYNATORA = "TWOJ_ADRES_EMAIL@pg.edu.pl"; // <-- TUTAJ WPISZ SWÓJ ADRES E-MAIL
   // ================================================
 
   let aktualnyJezyk = 'pl';
@@ -703,7 +723,7 @@
     pl: {
       badge: "Politechnika Gdańska",
       title: "Kwalifikacja Erasmus+",
-      subtitle: "Wydział Chemiczny • Weryfikacja formalna kandydata",
+      subtitle: "Wydział Chemiczny • Autodiagnoza formalna kandydata",
       coordTitle: "Koordynator Wydziałowy ds. Erasmus+ (WCh PG):",
       coordEmailLabel: "Adres e-mail:",
       coordNote: "Obsługa studentów I i II stopnia (domena @student.pg.edu.pl)",
@@ -746,9 +766,12 @@
       formEmail: "Twój studencki adres e-mail (@student.pg.edu.pl):",
       formField: "Kierunek i aktualny semestr studiów:",
       formHost: "Wybrana uczelnia zagraniczna (nazwa i kraj):",
+      formAttachmentLabel: "Zaświadczenie z dziekanatu o braku długu ECTS:",
+      formAttachmentNow: "Dołączę zaświadczenie od razu jako załącznik do tego maila",
+      formAttachmentLater: "Prześlę / dostarczę zaświadczenie w późniejszym terminie",
       btnSubmit: "Generuj i wyślij zgłoszenie",
       btnCopy: "Skopiuj treść zgłoszenia do schowka",
-      formNotice: "Pamiętaj: Do wiadomości należy załączyć skan lub zdjęcie potwierdzenia braku długu ECTS z dziekanatu!",
+      formNotice: "Pamiętaj: Warunkiem koniecznym do zakwalifikowania jest dostarczenie potwierdzenia braku długu punktowego!",
       footerText: "Wydział Chemiczny Politechniki Gdańskiej • Program Erasmus+"
     },
     en: {
@@ -797,9 +820,12 @@
       formEmail: "Your university email address (@student.pg.edu.pl):",
       formField: "Field of study and current semester:",
       formHost: "Selected host university (name and country):",
+      formAttachmentLabel: "Dean's Office confirmation of zero ECTS debt:",
+      formAttachmentNow: "I will attach the certificate directly to this email",
+      formAttachmentLater: "I will submit/send the certificate at a later date",
       btnSubmit: "Generate and send application",
       btnCopy: "Copy application text to clipboard",
-      formNotice: "Note: You must attach a scan/photo of the Dean's Office confirmation of zero ECTS debt to your email!",
+      formNotice: "Note: Submitting confirmation of zero ECTS debt is a mandatory requirement for qualification!",
       footerText: "Faculty of Chemistry, Gdańsk University of Technology • Erasmus+ Programme"
     }
   };
@@ -811,7 +837,7 @@
     document.getElementById('btn-lang-pl').classList.toggle('active', lang === 'pl');
     document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
 
-    // Aktualizacja statycznych tekstów UI
+    // Aktualizacja tekstów z atrybutem data-i18n
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
       if (t[lang][key]) {
@@ -1097,17 +1123,41 @@
     const uczelnia = document.getElementById('stud-uczelnia').value.trim();
     const isEn = (aktualnyJezyk === 'en');
     
+    // Termin planowanego wyjazdu (najbliższy semestr vs dalsza przyszłość)
+    const kiedyRadio = document.querySelector('input[name="kiedy"]:checked').value;
+    let kiedyOpis = "";
+    if (kiedyRadio === 'najblizszy') {
+      kiedyOpis = isEn ? "In the upcoming semester (current recruitment round)" : "W nadchodzącym semestrze (najbliższy nabór)";
+    } else {
+      kiedyOpis = isEn ? "In the further future" : "W dalszej przyszłości";
+    }
+
     const okres = document.querySelector('input[name="okres"]:checked').value === '2_semestry' 
       ? (isEn ? '2 semesters (full academic year)' : '2 semestry (cały rok akademicki)')
       : (isEn ? '1 semester' : '1 semestr');
 
     const jezykRadio = document.querySelector('input[name="jezyk"]:checked').value;
-    
     let jezykOpis = "";
     if (jezykRadio === 'posiadam') jezykOpis = isEn ? "I hold the required language certificate" : "Posiadam wymagany certyfikat językowy";
     if (jezykRadio === 'nie_nie_wymaga') jezykOpis = isEn ? "No certificate (not required by host university - requesting language interview with Coordinator)" : "Brak certyfikatu (uczelnia nie wymaga - proszę o wyznaczenie terminu rozmowy weryfikacyjnej z Koordynatorem)";
     if (jezykRadio === 'nie_wymaga') jezykOpis = isEn ? "No certificate (required by host - planning to take CJO PG or external test)" : "Brak certyfikatu (uczelnia wymaga - planowane przystąpienie do egzaminu CJO PG lub zewnętrznego)";
     if (jezykRadio === 'nie_nie_wiem') jezykOpis = isEn ? "Language requirement verification in progress" : "Status weryfikacji wymogów językowych w toku";
+
+    // Opcja dołączenia zaświadczenia z dziekanatu
+    const zalacznikRadio = document.querySelector('input[name="zalacznik_tryb"]:checked').value;
+    let zalacznikOpis = "";
+    if (zalacznikRadio === 'teraz') {
+      zalacznikOpis = isEn 
+        ? "Zaświadczenie z dziekanatu o braku długu ECTS dołączam bezpośrednio do niniejszego maila."
+        : "Zaświadczenie z dziekanatu o braku długu ECTS dołączam bezpośrednio jako załącznik do niniejszej wiadomości.";
+      if (isEn) {
+        zalacznikOpis = "Dean's Office confirmation of zero ECTS debt is attached directly to this email.";
+      }
+    } else {
+      zalacznikOpis = isEn
+        ? "I declare zero ECTS debt; official Dean's Office confirmation will be submitted/sent at a later date."
+        : "Oświadczam o braku długu punktowego ECTS; oficjalne zaświadczenie z dziekanatu WCh PG dostarczę / prześlę w późniejszym terminie.";
+    }
 
     let plainText = "";
     if (isEn) {
@@ -1123,12 +1173,13 @@ CANDIDATE INFORMATION:
 
 EXCHANGE PLAN:
 - Host University: ${uczelnia}
+- Planned departure timeframe: ${kiedyOpis}
 - Duration of stay: ${okres}
 - Previous Erasmus+ mobilities (current cycle): ${wykorzystaneMiesiace} months (remaining: ${12 - wykorzystaneMiesiace} months)
 - Language proficiency status: ${jezykOpis}
 
 ACADEMIC PROGRESS DECLARATION:
-I hereby declare that I have zero ECTS debt and no failed courses. Attached is the Dean's Office confirmation.
+${zalacznikOpis}
 
 Sincerely,
 ${nazwisko}`;
@@ -1145,12 +1196,13 @@ DANE KANDYDATA:
 
 PLANOWANY WYJAZD:
 - Uczelnia partnerska: ${uczelnia}
+- Horyzont czasowy wyjazdu: ${kiedyOpis}
 - Planowany okres pobytu: ${okres}
 - Wcześniejsze wyjazdy Erasmus+ (obecny stopień): ${wykorzystaneMiesiace} mies. (pozostały kapitał: ${12 - wykorzystaneMiesiace} mies.)
 - Status certyfikatu językowego: ${jezykOpis}
 
-OŚWIADCZENIE O BRAKU ZALEGŁOŚCI:
-Oświadczam, że nie posiadam zaległości punktowych ECTS. W załączeniu przesyłam potwierdzenie braku długu punktowego uzyskane w dziekanacie WCh PG.
+STATUS ZAŚWIADCZENIA O BRAKU DŁUGU ECTS:
+${zalacznikOpis}
 
 Z poważaniem,
 ${nazwisko}`;
@@ -1203,8 +1255,8 @@ ${nazwisko}`;
         statusMsg.style.color = '#03543f';
         statusMsg.style.border = '1px solid #bcf0da';
         statusMsg.innerHTML = isEn
-          ? "✓ Opened a new tab in your Gdańsk Tech Outlook (M365). Review the text, attach your Dean's Office debt clearance slip, and click <strong>Send</strong>."
-          : "✓ Otwarto nową kartę w Twojej poczcie Outlook (M365). Sprawdź treść, dołącz plik/skan zaświadczenia z dziekanatu i kliknij <strong>Wyślij</strong>.";
+          ? "✓ Opened a new tab in your Gdańsk Tech Outlook (M365). Review the text, attach your Dean's Office debt clearance slip (if selected), and click <strong>Send</strong>."
+          : "✓ Otwarto nową kartę w Twojej poczcie Outlook (M365). Sprawdź treść, dołącz plik/skan zaświadczenia z dziekanatu (jeśli wybrano tę opcję) i kliknij <strong>Wyślij</strong>.";
       } else {
         statusMsg.style.background = '#fffbeb';
         statusMsg.style.color = '#92400e';
