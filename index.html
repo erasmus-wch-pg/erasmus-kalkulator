@@ -464,7 +464,7 @@
   <header>
     <div class="badge" data-i18n="badge">Politechnika Gdańska</div>
     <h1 data-i18n="title">Kwalifikacja Erasmus+</h1>
-    <p class="subtitle" data-i18n="subtitle">Wydział Chemiczny • Autodiagnoza formalna kandydata</p>
+    <p class="subtitle" data-i18n="subtitle">Wydział Chemiczny • Weryfikacja formalna kandydata</p>
   </header>
 
   <!-- Wizytówka koordynatora -->
@@ -472,8 +472,7 @@
     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
     <div>
       <strong data-i18n="coordTitle">Koordynator Wydziałowy ds. Erasmus+ (WCh PG):</strong><br>
-      <span data-i18n="coordEmailLabel">Adres e-mail:</span> <span id="label-email" style="font-weight: 700;">TWOJ_ADRES_EMAIL@pg.edu.pl</span><br>
-      <span style="font-size: 11.5px; color: #3b82f6;" data-i18n="coordNote">Obsługa studentów I i II stopnia (domena @student.pg.edu.pl)</span>
+      <span data-i18n="coordEmailLabel">Adres e-mail:</span> <span id="label-email" style="font-weight: 700;">joanna.grabowska@pg.edu.pl</span><br>
     </div>
   </div>
 
@@ -672,22 +671,26 @@
         <input type="text" id="stud-uczelnia" class="form-control" placeholder="np. Universitat de València (Hiszpania)">
       </div>
 
-      <!-- Wybór dotyczący dołączenia zaświadczenia z dziekanatu -->
+      <!-- Wybór dotyczący dołączenia zaświadczenia z dziekanatu (BEZ DOMYŚLNEGO WYBORU) -->
       <div class="form-group">
         <label data-i18n="formAttachmentLabel">Zaświadczenie z dziekanatu o braku długu ECTS:</label>
         <div class="tiles-grid">
           <label class="tile-label">
-            <input type="radio" name="zalacznik_tryb" value="teraz" checked>
+            <input type="radio" name="zalacznik_tryb" value="teraz" onchange="zaktualizujStatusZalacznika()">
             <div class="tile-content" data-i18n="formAttachmentNow" style="min-height: 44px; font-size: 13px;">
               Dołączę zaświadczenie od razu jako załącznik do tego maila
             </div>
           </label>
           <label class="tile-label">
-            <input type="radio" name="zalacznik_tryb" value="pozniej">
+            <input type="radio" name="zalacznik_tryb" value="pozniej" onchange="zaktualizujStatusZalacznika()">
             <div class="tile-content" data-i18n="formAttachmentLater" style="min-height: 44px; font-size: 13px;">
               Prześlę / dostarczę zaświadczenie w późniejszym terminie
             </div>
           </label>
+        </div>
+        <!-- Dynamiczny boks statusu wyboru deklaracji -->
+        <div id="status-zalacznika" style="margin-top: 6px; padding: 7px 10px; border-radius: 8px; font-size: 12px; background: #fffbeb; border: 1px solid #fde68a; color: #92400e; font-weight: 600;">
+          ⚠️ <span data-i18n="formAttachmentNone">Nie wybrano żadnej opcji – zaznacz jedną z deklaracji powyżej.</span>
         </div>
       </div>
 
@@ -712,7 +715,7 @@
 
 <script>
   // ================= KONFIGURACJA =================
-  const EMAIL_KOORDYNATORA = "TWOJ_ADRES_EMAIL@pg.edu.pl"; // <-- TUTAJ WPISZ SWÓJ ADRES E-MAIL
+  const EMAIL_KOORDYNATORA = "joanna.grabowska@pg.edu.pl"; // <-- TUTAJ WPISZ SWÓJ ADRES E-MAIL
   // ================================================
 
   let aktualnyJezyk = 'pl';
@@ -769,6 +772,10 @@
       formAttachmentLabel: "Zaświadczenie z dziekanatu o braku długu ECTS:",
       formAttachmentNow: "Dołączę zaświadczenie od razu jako załącznik do tego maila",
       formAttachmentLater: "Prześlę / dostarczę zaświadczenie w późniejszym terminie",
+      formAttachmentNone: "Nie wybrano żadnej opcji – zaznacz jedną z deklaracji powyżej.",
+      formAttachmentSelectedNow: "✓ Zadeklarowano: Zaświadczenie zostanie dołączone do wysyłanego e-maila.",
+      formAttachmentSelectedLater: "✓ Zadeklarowano: Zaświadczenie zostanie dostarczone w późniejszym terminie.",
+      alertAttachmentMissing: "Proszę wybrać status zaświadczenia z dziekanatu (dołączam teraz lub prześlę później)!",
       btnSubmit: "Generuj i wyślij zgłoszenie",
       btnCopy: "Skopiuj treść zgłoszenia do schowka",
       formNotice: "Pamiętaj: Warunkiem koniecznym do zakwalifikowania jest dostarczenie potwierdzenia braku długu punktowego!",
@@ -823,6 +830,10 @@
       formAttachmentLabel: "Dean's Office confirmation of zero ECTS debt:",
       formAttachmentNow: "I will attach the certificate directly to this email",
       formAttachmentLater: "I will submit/send the certificate at a later date",
+      formAttachmentNone: "No option selected – please select one of the declarations above.",
+      formAttachmentSelectedNow: "✓ Declared: The certificate will be attached directly to this email.",
+      formAttachmentSelectedLater: "✓ Declared: The certificate will be submitted at a later date.",
+      alertAttachmentMissing: "Please select the status of the Dean's Office certificate (attach now or submit later)!",
       btnSubmit: "Generate and send application",
       btnCopy: "Copy application text to clipboard",
       formNotice: "Note: Submitting confirmation of zero ECTS debt is a mandatory requirement for qualification!",
@@ -858,10 +869,35 @@
       document.getElementById('stud-uczelnia').placeholder = "np. Universitat de València (Hiszpania)";
     }
 
+    zaktualizujStatusZalacznika();
     obliczWynik();
   }
 
   document.getElementById('label-email').innerText = EMAIL_KOORDYNATORA;
+
+  // Dynamiczna aktualizacja boksu statusu zaświadczenia po kliknięciu
+  function zaktualizujStatusZalacznika() {
+    const wybrana = document.querySelector('input[name="zalacznik_tryb"]:checked');
+    const statusBox = document.getElementById('status-zalacznika');
+
+    if (!wybrana) {
+      statusBox.style.background = "#fffbeb";
+      statusBox.style.borderColor = "#fde68a";
+      statusBox.style.color = "#92400e";
+      statusBox.innerHTML = `⚠️ <span>${t[aktualnyJezyk].formAttachmentNone}</span>`;
+      return;
+    }
+
+    statusBox.style.background = "#ecfdf5";
+    statusBox.style.borderColor = "#a7f3d0";
+    statusBox.style.color = "#065f46";
+
+    if (wybrana.value === 'teraz') {
+      statusBox.innerHTML = t[aktualnyJezyk].formAttachmentSelectedNow;
+    } else {
+      statusBox.innerHTML = t[aktualnyJezyk].formAttachmentSelectedLater;
+    }
+  }
 
   function sprawdzTerminRekrutacji() {
     const dzis = new Date();
@@ -1007,7 +1043,11 @@
     }
 
     // Warunek: Umowa
-    if (umowa === 'nie') {
+    if (umowa === 'nie_wiem') {
+      blokady.push(isEn
+        ? "You must first check whether an active bilateral agreement exists with your chosen university. Review the official agreements list before proceeding."
+        : "Musisz najpierw sprawdzić, czy z wybraną uczelnią jest podpisana umowa o wymianie z Wydziałem Chemicznym PG. Zapoznaj się z listą umów bilateralnych przed kontynuowaniem kwalifikacji.");
+    } else if (umowa === 'nie') {
       blokady.push(isEn
         ? "No bilateral agreement with the chosen university. Establishing a new agreement takes months and precludes exchange in the upcoming semester."
         : "Brak umowy z wybraną uczelnią. Podpisanie nowej umowy trwa wiele miesięcy i wyklucza wyjazd w najbliższym semestrze.");
@@ -1123,7 +1163,7 @@
     const uczelnia = document.getElementById('stud-uczelnia').value.trim();
     const isEn = (aktualnyJezyk === 'en');
     
-    // Termin planowanego wyjazdu (najbliższy semestr vs dalsza przyszłość)
+    // Termin planowanego wyjazdu
     const kiedyRadio = document.querySelector('input[name="kiedy"]:checked').value;
     let kiedyOpis = "";
     if (kiedyRadio === 'najblizszy') {
@@ -1143,16 +1183,17 @@
     if (jezykRadio === 'nie_wymaga') jezykOpis = isEn ? "No certificate (required by host - planning to take CJO PG or external test)" : "Brak certyfikatu (uczelnia wymaga - planowane przystąpienie do egzaminu CJO PG lub zewnętrznego)";
     if (jezykRadio === 'nie_nie_wiem') jezykOpis = isEn ? "Language requirement verification in progress" : "Status weryfikacji wymogów językowych w toku";
 
-    // Opcja dołączenia zaświadczenia z dziekanatu
-    const zalacznikRadio = document.querySelector('input[name="zalacznik_tryb"]:checked').value;
+    // Opcja dołączenia zaświadczenia z dziekanatu (wymagana weryfikacja)
+    const zalacznikRadio = document.querySelector('input[name="zalacznik_tryb"]:checked');
+    if (!zalacznikRadio) {
+      return null;
+    }
+
     let zalacznikOpis = "";
-    if (zalacznikRadio === 'teraz') {
+    if (zalacznikRadio.value === 'teraz') {
       zalacznikOpis = isEn 
-        ? "Zaświadczenie z dziekanatu o braku długu ECTS dołączam bezpośrednio do niniejszego maila."
+        ? "Dean's Office confirmation of zero ECTS debt is attached directly to this email."
         : "Zaświadczenie z dziekanatu o braku długu ECTS dołączam bezpośrednio jako załącznik do niniejszej wiadomości.";
-      if (isEn) {
-        zalacznikOpis = "Dean's Office confirmation of zero ECTS debt is attached directly to this email.";
-      }
     } else {
       zalacznikOpis = isEn
         ? "I declare zero ECTS debt; official Dean's Office confirmation will be submitted/sent at a later date."
@@ -1212,11 +1253,19 @@ ${nazwisko}`;
   }
 
   function wyslijFormularzAutomatycznie() {
+    const isEn = (aktualnyJezyk === 'en');
+    const zalacznikRadio = document.querySelector('input[name="zalacznik_tryb"]:checked');
+
+    if (!zalacznikRadio) {
+      alert(t[aktualnyJezyk].alertAttachmentMissing);
+      document.getElementById('status-zalacznika').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
     const dane = generujTrescZgloszenia();
     const statusMsg = document.getElementById('send-status-msg');
-    const isEn = (aktualnyJezyk === 'en');
 
-    if (!dane.nazwisko || !dane.email || !dane.kierunek || !dane.uczelnia) {
+    if (!dane || !dane.nazwisko || !dane.email || !dane.kierunek || !dane.uczelnia) {
       alert(isEn 
         ? "Please fill in all fields (Full name, email, field/semester, and host university)!" 
         : "Proszę uzupełnić wszystkie pola (imię i nazwisko, e-mail, kierunek oraz wybraną uczelnię)!");
@@ -1269,12 +1318,21 @@ ${nazwisko}`;
   }
 
   function kopiujTrescMaila() {
-    const dane = generujTrescZgloszenia();
     const isEn = (aktualnyJezyk === 'en');
-    if (!dane.nazwisko || !dane.email) {
+    const zalacznikRadio = document.querySelector('input[name="zalacznik_tryb"]:checked');
+
+    if (!zalacznikRadio) {
+      alert(t[aktualnyJezyk].alertAttachmentMissing);
+      document.getElementById('status-zalacznika').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const dane = generujTrescZgloszenia();
+    if (!dane || !dane.nazwisko || !dane.email) {
       alert(isEn ? "Please enter at least your name and email." : "Uzupełnij przynajmniej swoje imię, nazwisko i e-mail.");
       return;
     }
+
     navigator.clipboard.writeText(dane.plainText).then(() => {
       alert(isEn 
         ? "Application text successfully copied to clipboard! You can paste it (Ctrl+V) into any email client." 
